@@ -25,17 +25,20 @@ module.exports = {
 	Mutation: {
 		async createLesson(_, { title, description, location, time }, context) {
 			const user = checkAuth(context);
+			console.log('user: ', user);
 			try {
 				const lesson = new Lesson({
 					title,
 					description,
 					location,
 					time,
+					teacher_name: user.username,
+					teacher: user.id,
 					created_at: new Date().toISOString(),
 				});
 
 				const res = await lesson.save();
-				console.log(res);
+
 				return {
 					...res._doc,
 					id: res.id,

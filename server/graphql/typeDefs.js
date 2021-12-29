@@ -7,6 +7,7 @@ module.exports = gql`
 		username: String!
 		created_at: String!
 		signedup_to: [String]
+		token: String!
 	}
 
 	type Lesson {
@@ -16,6 +17,8 @@ module.exports = gql`
 		location: String!
 		time: String!
 		created_at: String!
+		teacher_name: String!
+		teacher: String
 		students: [String]
 	}
 
@@ -40,7 +43,7 @@ module.exports = gql`
 
 	type Mutation {
 		register(registerInput: RegisterInput): User!
-		login(username: String!, password: String!): User
+		login(username: String!, password: String!): User!
 		createLesson(
 			title: String!
 			description: String!

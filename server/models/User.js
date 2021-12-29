@@ -5,10 +5,6 @@ const userSchema = new Schema({
 	password: String,
 	email: String,
 	created_at: Date,
-	signedup_to: {
-		type: Schema.Types.ObjectId,
-		ref: 'lessons',
-	},
 });
 
 module.exports = model('User', userSchema);
