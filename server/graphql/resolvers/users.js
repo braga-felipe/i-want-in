@@ -19,7 +19,6 @@ module.exports = {
 		async getUsers() {
 			try {
 				const users = await User.find();
-				console.log(users);
 				return users;
 			} catch (err) {
 				throw new Error(err);
@@ -59,7 +58,6 @@ module.exports = {
 			}
 
 			const token = generateToken(user);
-			console.log(token);
 			return {
 				...user._doc,
 				id: user._id,
@@ -137,7 +135,26 @@ module.exports = {
 				throw new UserInputError('Wrong crendetials', { errors });
 			}
 
+			// check if user is registered to any classes
+			if (user.signedup_to.length) {
+				// for every registred class
+				for (reg of user.signedup_to) {
+					// find that class using the id
+					const lesson = await Lesson.findById(reg.id);
+					// filter the list of students
+					const updatedStudents = lesson.students.filter((student) => {
+						return !(student.username === user.username);
+					});
+					// update the students list
+					await Lesson.updateOne(
+						{ _id: lesson._id },
+						{ students: updatedStudents }
+					);
+				}
+			}
+
 			await user.delete();
+
 			return `User ${user.username} deleted!`;
 		},
 
@@ -168,7 +185,7 @@ module.exports = {
 					];
 					await User.updateOne({ _id: student._id }, { signedup_to: signUps });
 				}
-				return `${student.username} registered to ${lesson.title} with ${lesson.teacher_name} successfully!`;
+				return `${student.username} registered successfully to ${lesson.title} with ${lesson.teacher_name} !`;
 			} catch (err) {
 				throw new Error(err);
 			}
