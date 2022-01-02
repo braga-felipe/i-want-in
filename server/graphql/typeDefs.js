@@ -6,7 +6,8 @@ module.exports = gql`
 		email: String!
 		username: String!
 		created_at: String!
-		signedup_to: [String]
+		classes: [ClassItem]
+		signedup_to: [ClassItem]
 		token: String!
 	}
 
@@ -18,8 +19,20 @@ module.exports = gql`
 		time: String!
 		created_at: String!
 		teacher_name: String!
-		teacher: String
-		students: [String]
+		teacherId: String
+		students: [Student]
+	}
+
+	# types to be used in properties
+	type ClassItem {
+		id: ID!
+		title: String!
+		teacher: String!
+	}
+
+	type Student {
+		id: ID!
+		username: String!
 	}
 
 	type Query {
@@ -52,5 +65,6 @@ module.exports = gql`
 		): Lesson!
 		deleteLesson(lessonId: ID!): String!
 		signupToLesson(lessonId: ID!, userId: ID!): String!
+		deleteUser(username: String!, password: String!): String!
 	}
 `;

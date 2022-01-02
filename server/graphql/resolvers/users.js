@@ -9,6 +9,7 @@ const {
 	validateRegistrationInput,
 	validateLoginInput,
 } = require('../../helpers/validators');
+const checkAuth = require('../../helpers/authorizations');
 
 const User = require('../../models/User');
 const Lesson = require('../../models/Lesson');
@@ -99,7 +100,6 @@ module.exports = {
 				username,
 				password,
 				created_at: new Date().toISOString(),
-				signedup_to: [],
 			});
 
 			// save new isntance to the database
@@ -117,24 +117,58 @@ module.exports = {
 			};
 		},
 
-		async signupToLesson(_, { lessonId, userId }) {
+		async deleteUser(_, { username, password }) {
+			const { errors, valid } = validateLoginInput(username, password);
+
+			if (!valid) {
+				throw new UserInputError('Errors', { errors });
+			}
+
+			const user = await User.findOne({ username });
+
+			if (!user) {
+				errors.general = 'User not found';
+				throw new UserInputError('User not found', { errors });
+			}
+
+			const match = await bcrypt.compare(password, user.password);
+			if (!match) {
+				errors.general = 'Wrong crendetials';
+				throw new UserInputError('Wrong crendetials', { errors });
+			}
+
+			await user.delete();
+			return `User ${user.username} deleted!`;
+		},
+
+		async signupToLesson(_, { lessonId, userId }, context) {
+			const user = checkAuth(context);
 			try {
 				const lesson = await Lesson.findById(lessonId);
 				if (lesson) {
-					const user = await User.findById(userId);
-					if (user) {
-						if (!user.includes(lesson)) {
-							user.signedup_to.push(lesson);
-							return `${user.username} signed up to ${lesson.title}!`;
-						} else {
-							return `${user.username} is already signed up to ${lesson.title}.`;
-						}
-					} else {
-						throw new Error('User not found');
-					}
-				} else {
-					throw new Error('Lesson not found');
+					const updatedStudents = [
+						...lesson.students,
+						{ id: user.id, username: user.username },
+					];
+					await Lesson.updateOne(
+						{ _id: lesson._id },
+						{ students: updatedStudents }
+					);
 				}
+
+				const student = await User.findById(userId);
+				if (student) {
+					const signUps = [
+						...student.signedup_to,
+						{
+							id: lesson._id,
+							title: lesson.title,
+							teacher: lesson.teacher_name,
+						},
+					];
+					await User.updateOne({ _id: student._id }, { signedup_to: signUps });
+				}
+				return `${student.username} registered to ${lesson.title} with ${lesson.teacher_name} successfully!`;
 			} catch (err) {
 				throw new Error(err);
 			}

@@ -7,14 +7,16 @@ const lessonSchema = new Schema({
 	time: String,
 	created_at: String,
 	teacher_name: String,
-	teacher: {
+	teacherId: {
 		type: Schema.Types.ObjectId,
 		ref: 'users',
 	},
-	students: {
-		type: Schema.Types.ObjectId,
-		ref: 'users',
-	},
+	students: [
+		{
+			id: String,
+			username: String,
+		},
+	],
 });
 
 module.exports = model('Lesson', lessonSchema);
