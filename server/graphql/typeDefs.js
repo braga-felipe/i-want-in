@@ -20,6 +20,7 @@ module.exports = gql`
 		created_at: String!
 		teachers: [Teacher]
 		students: [Student]
+		studentCount: Int!
 	}
 
 	# types to be used in properties
