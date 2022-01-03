@@ -67,13 +67,26 @@ module.exports = {
 
 		async register(
 			_,
-			{ registerInput: { username, email, password, confirmpassword } }
+			{
+				registerInput: {
+					first_name,
+					last_name,
+					phone,
+					email,
+					username,
+					password,
+					confirmpassword,
+				},
+			}
 		) {
 			// Validate user data
 			// destructure the result of calling the helper
 			const { valid, errors } = validateRegistrationInput(
-				username,
+				first_name,
+				last_name,
+				phone,
 				email,
+				username,
 				password,
 				confirmpassword
 			);
@@ -94,6 +107,9 @@ module.exports = {
 
 			//create new instance of User
 			const newUser = new User({
+				first_name,
+				last_name,
+				phone,
 				email,
 				username,
 				password,

@@ -15,13 +15,33 @@ exports.generateToken = (user) => {
 };
 
 exports.validateRegistrationInput = (
-	username,
+	first_name,
+	last_name,
+	phone,
 	email,
+	username,
 	password,
 	confirmpassword
 ) => {
 	// object to store the errors and to later check if the errors object is empty
 	const errors = {};
+
+	// check if first_name input is empty
+	if (first_name.trim() === '')
+		errors.first_name = 'Please enter your first name';
+
+	// check if last_name input is empty
+	if (last_name.trim() === '') errors.last_name = 'Please enter your last name';
+
+	// check if phone input is empty
+	if (phone.trim() === '') errors.phone = 'Please enter a phone number';
+	else {
+		// regEx to validate phone number
+		const regEx = /^(\+|00)[1-9][0-9 \-\(\)\.]{7,32}$/;
+		if (!phone.match(regEx)) {
+			errors.phone = 'Please enter a valid phone number';
+		}
+	}
 
 	// check if username is empty
 	if (username.trim() === '') errors.username = 'Please enter a valid username';
