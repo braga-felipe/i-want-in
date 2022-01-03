@@ -177,20 +177,32 @@ module.exports = {
 		async signupToLesson(_, { lessonId, userId }, context) {
 			const user = checkAuth(context);
 			try {
-				const lesson = await Lesson.findById(lessonId);
-				if (lesson) {
-					const updatedStudents = [
-						...lesson.students,
-						{ id: user.id, username: user.username },
-					];
-					await Lesson.updateOne(
-						{ _id: lesson._id },
-						{ students: updatedStudents }
-					);
-				}
-
 				const student = await User.findById(userId);
 				if (student) {
+					// check if student is already registered
+					if (
+						student.signedup_to.filter((lesson) => lesson.id === lessonId)
+							.length
+					)
+						return 'You are already registred to this class.';
+
+					// update lesson's students prop
+					const lesson = await Lesson.findById(lessonId);
+					if (lesson) {
+						// create an array with the current students and add the new student
+						const updatedStudents = [
+							...lesson.students,
+							{ id: user.id, username: user.username },
+						];
+
+						// assign updated array of students to lesson's students prop
+						await Lesson.updateOne(
+							{ _id: lesson._id },
+							{ students: updatedStudents }
+						);
+					}
+
+					// create an array with the current registrations and add the new lesson
 					const signUps = [
 						...student.signedup_to,
 						{
@@ -199,9 +211,18 @@ module.exports = {
 							teacher: lesson.teacher_name,
 						},
 					];
+
+					// assign the updated array of registrations to the user's signedup_to prop
 					await User.updateOne({ _id: student._id }, { signedup_to: signUps });
+
+					// get teacher(s) name(s)
+					const teachers = lesson.teachers
+						.flatMap((teacher) => teacher.username)
+						.join(' and ');
+
+					return `${student.first_name} registered successfully to ${lesson.title} with ${teachers} !`;
 				}
-				return `${student.username} registered successfully to ${lesson.title} with ${lesson.teacher_name} !`;
+				return 'User not found';
 			} catch (err) {
 				throw new Error(err);
 			}
