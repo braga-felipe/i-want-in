@@ -6,11 +6,12 @@ const lessonSchema = new Schema({
 	location: String,
 	time: String,
 	created_at: String,
-	teacher_name: String,
-	teacherId: {
-		type: Schema.Types.ObjectId,
-		ref: 'users',
-	},
+	teachers: [
+		{
+			id: String,
+			username: String,
+		},
+	],
 	students: [
 		{
 			id: String,

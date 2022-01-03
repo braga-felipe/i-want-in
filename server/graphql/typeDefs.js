@@ -18,8 +18,7 @@ module.exports = gql`
 		location: String!
 		time: String!
 		created_at: String!
-		teacher_name: String!
-		teacherId: String
+		teachers: [Teacher]
 		students: [Student]
 	}
 
@@ -31,6 +30,11 @@ module.exports = gql`
 	}
 
 	type Student {
+		id: ID!
+		username: String!
+	}
+
+	type Teacher {
 		id: ID!
 		username: String!
 	}
@@ -62,6 +66,7 @@ module.exports = gql`
 			description: String!
 			location: String!
 			time: String!
+			partner: String
 		): Lesson!
 		deleteLesson(lessonId: ID!): String!
 		signupToLesson(lessonId: ID!, userId: ID!): String!
