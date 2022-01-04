@@ -33,6 +33,11 @@ module.exports = {
 			const user = checkAuth(context);
 			const _partner = await User.findOne({ username: partner });
 
+			// variable to be stored in teachers prop of Lesson, if partner is set it will be pushed to the variable teachers.
+			const teachers = [{ id: user.id, username: user.username }];
+			_partner &&
+				teachers.push({ id: _partner._id, username: _partner.username });
+
 			try {
 				// create new instance of Lesson with params
 				const lesson = new Lesson({
@@ -41,6 +46,7 @@ module.exports = {
 					location,
 					time,
 					created_at: new Date().toISOString(),
+					teachers,
 				});
 
 				// save instance to database
@@ -87,16 +93,6 @@ module.exports = {
 				const lesson = await Lesson.findById(lessonId);
 				if (lesson) {
 					const lessonTitle = lesson.title;
-					const teacher = await User.findById(lesson.teacherId);
-					if (teacher) {
-						const filteredClasses = teacher.classes.filter(
-							(cl) => cl.id === lesson._id
-						);
-						await User.updateOne(
-							{ _id: teacher._id },
-							{ classes: filteredClasses }
-						);
-					}
 					await lesson.delete();
 					return `Lesson deleted: ${lessonTitle}`;
 				} else throw new Error('Lesson not found');

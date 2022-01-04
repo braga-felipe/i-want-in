@@ -30,7 +30,7 @@ module.exports = gql`
 	type ClassItem {
 		id: ID!
 		title: String!
-		teacher: String!
+		teachers: [Teacher]
 	}
 
 	type Student {

@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 // UserInputError from Apollo
 const { UserInputError } = require('apollo-server');
 
+// helper functions
 const {
 	generateToken,
 	validateRegistrationInput,
@@ -11,6 +12,7 @@ const {
 } = require('../../helpers/validators');
 const checkAuth = require('../../helpers/authorizations');
 
+// models
 const User = require('../../models/User');
 const Lesson = require('../../models/Lesson');
 
@@ -175,7 +177,8 @@ module.exports = {
 		},
 
 		async signupToLesson(_, { lessonId, userId }, context) {
-			const user = checkAuth(context);
+			// const user = checkAuth(context);
+			const user = await User.findOne({ _id: userId });
 			try {
 				const student = await User.findById(userId);
 				if (student) {
@@ -208,7 +211,7 @@ module.exports = {
 						{
 							id: lesson._id,
 							title: lesson.title,
-							teacher: lesson.teacher_name,
+							teachers: lesson.teachers,
 						},
 					];
 
