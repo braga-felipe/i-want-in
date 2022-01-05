@@ -15,6 +15,7 @@ const checkAuth = require('../../helpers/authorizations');
 // models
 const User = require('../../models/User');
 const Lesson = require('../../models/Lesson');
+const { updateUser } = require('../../helpers/updateLogic');
 
 module.exports = {
 	Query: {
@@ -178,7 +179,7 @@ module.exports = {
 
 		async signupToLesson(_, { lessonId, userId }, context) {
 			// const user = checkAuth(context);
-			const user = await User.findOne({ _id: userId });
+			const lesson = await Lesson.findById(lessonId);
 			try {
 				const student = await User.findById(userId);
 				if (student) {
@@ -189,36 +190,10 @@ module.exports = {
 					)
 						return 'You are already registred to this class.';
 
-					// update lesson's students prop
-					const lesson = await Lesson.findById(lessonId);
-					if (lesson) {
-						// create an array with the current students and add the new student
-						const updatedStudents = [
-							...lesson.students,
-							{ id: user.id, username: user.username },
-						];
-
-						// assign updated array of students to lesson's students prop
-						await Lesson.updateOne(
-							{ _id: lesson._id },
-							{ students: updatedStudents }
-						);
-					}
-
-					// create an array with the current registrations and add the new lesson
-					const signUps = [
-						...student.signedup_to,
-						{
-							id: lesson._id,
-							title: lesson.title,
-							teachers: lesson.teachers,
-						},
-					];
-
-					// assign the updated array of registrations to the user's signedup_to prop
-					await User.updateOne({ _id: student._id }, { signedup_to: signUps });
-
+					// update user and lesson
+					updateUser(lessonId, 'register', userId);
 					// get teacher(s) name(s)
+
 					const teachers = lesson.teachers
 						.flatMap((teacher) => teacher.username)
 						.join(' and ');
