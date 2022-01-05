@@ -1,32 +1,31 @@
 const User = require('../models/User');
 const Lesson = require('../models/Lesson');
 
-exports.updateUser = async function (userId, lessonId, event) {
+const updateUser = async function (lessonId, event, userId = null) {
 	// event can be "register", "create" or "delete", and will define if we're adding or deleting from properties, and if it will be to the property "classes", in case of a teacher, or "signedup_to" in case of a student;
-
 	try {
 		// fetch lesson
 		const lesson = await Lesson.findById(lessonId);
-
 		// if we're deleting a class we need to updated user's (students) signedup_to and (teachers) classes
 		if (event === 'delete') {
 			// UPDATING STUDENTS:
 			// get list of students
 			const students = [...lesson.students];
+
 			for (let student of students) {
 				// fetch user from student's id
 				const user = await User.findById(student.id);
 				// create an array of lessons that don't match the id of the lesson to be deleted
 				const filteredSignedup = [];
-				student.signedup_to.forEach((registration) => {
-					if (registration.id !== lesson._id) {
+				user.signedup_to.forEach((registration) => {
+					if (registration.title !== lesson.title) {
 						filteredSignedup.push(registration);
 					}
 				});
 				// update user's "signedup_to" property
 				await User.updateOne(
 					{ _id: user._id },
-					{ signedup_to: updatedSignedup }
+					{ signedup_to: filteredSignedup }
 				);
 			}
 
@@ -38,13 +37,15 @@ exports.updateUser = async function (userId, lessonId, event) {
 				const user = await User.findById(teacher.id);
 				// creates a new array of lessons that don't match the id of the lesson to be deleted
 				const filteredClasses = [];
-				teacher.classes.forEach((classe) => {
-					if (classe.id !== lesson._id) {
+				user.classes.forEach((classe) => {
+					const id = classe.id;
+					const _id = lesson.id;
+					if (id !== _id) {
 						filteredClasses.push(classe);
 					}
 				});
 				//update user's "classes" property
-				await User.updateOne({ _id: user._id }, { classes: updatedClasses });
+				await User.updateOne({ _id: user._id }, { classes: filteredClasses });
 			}
 			return 'Users updated';
 		}
@@ -79,3 +80,5 @@ exports.updateUser = async function (userId, lessonId, event) {
 		throw new Error(err);
 	}
 };
+
+module.exports = { updateUser };

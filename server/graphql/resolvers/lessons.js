@@ -1,6 +1,8 @@
 const Lesson = require('../../models/Lesson');
 const User = require('../../models/User');
 const checkAuth = require('../../helpers/authorizations');
+const { updateUser } = require('../../helpers/updateLogic');
+
 module.exports = {
 	Query: {
 		async getLessons() {
@@ -92,6 +94,7 @@ module.exports = {
 			try {
 				const lesson = await Lesson.findById(lessonId);
 				if (lesson) {
+					await updateUser(lessonId, 'delete');
 					const lessonTitle = lesson.title;
 					await lesson.delete();
 					return `Lesson deleted: ${lessonTitle}`;
