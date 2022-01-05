@@ -67,6 +67,19 @@ const updateUser = async function (lessonId, event, userId = null) {
 
 		// if we're signing up to a class we need to updated the user's "signedup_to" property
 		if (event === 'register') {
+			const updatedStudents = [
+				...lesson.students,
+				{
+					id: user._id,
+					first_name: user.first_name,
+					last_name: user.last_name,
+				},
+			];
+			await Lesson.updateOne(
+				{ _id: lesson._id },
+				{ students: updatedStudents }
+			);
+
 			const updatedSignedup = [
 				...user.signedup_to,
 				{ id: lesson._id, title: lesson.title, teachers: lesson.teachers },

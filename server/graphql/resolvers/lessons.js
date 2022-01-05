@@ -35,7 +35,7 @@ module.exports = {
 			const user = checkAuth(context);
 			const _partner = await User.findOne({ username: partner });
 
-			// variable to be stored in teachers prop of Lesson, if partner is set it will be pushed to the variable teachers.
+			// variable to be stored in "teachers" prop of Lesson, if partner is set it will be pushed to the variable teachers.
 			const teachers = [{ id: user.id, username: user.username }];
 			_partner &&
 				teachers.push({ id: _partner._id, username: _partner.username });
@@ -55,30 +55,11 @@ module.exports = {
 				const res = await lesson.save();
 
 				// updating teachers property:
-				// create variable storing information from user
-				const teachersUpdate = [{ id: user.id, username: user.username }];
-				// in case there's a partner passed in the arguments, push the info of the partner
-				if (_partner) {
-					teachersUpdate.push({ id: _partner.id, username: _partner.username });
-					console.log({ teachersUpdate });
-					_partner.classes.push({ id: lesson._id, title: lesson.title });
-					await User.updateOne(
-						{ _id: _partner.id },
-						{ classes: _partner.classes }
-					);
-				}
-				// update teachers property with info gathered
-				await Lesson.updateOne({ _id: res._id }, { teachers: teachersUpdate });
+				// in case there's a partner passed in the arguments, update "classes" property
+				_partner && updateUser(res._id, 'create', _partner._id);
 
-				// update User's "classes" property to add the new instance os lesson
-				const userToUpdate = await User.findById(user.id);
-				if (userToUpdate) {
-					userToUpdate.classes.push({ id: lesson._id, title: lesson.title });
-					await User.updateOne(
-						{ _id: userToUpdate._id },
-						{ classes: userToUpdate.classes }
-					);
-				}
+				// update User's "classes" property
+				updateUser(res._id, 'create', user.id);
 
 				return {
 					...res._doc,
