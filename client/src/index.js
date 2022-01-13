@@ -9,15 +9,15 @@ import { uri } from './config';
 
 // this client will have all the information about our GraphQL server
 const client = new ApolloClient({
-	uri,
-	cache: new InMemoryCache(),
+  uri: 'http://localhost:3000/',
+  cache: new InMemoryCache(),
 });
 
 ReactDOM.render(
-	<React.StrictMode>
-		<ApolloProvider client={client}>
-			<App />
-		</ApolloProvider>
-	</React.StrictMode>,
-	document.getElementById('root')
+  <React.StrictMode>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
