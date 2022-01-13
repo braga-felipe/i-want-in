@@ -72,7 +72,7 @@ exports.validateLoginInput = (username, password) => {
 	const errors = {};
 
 	// check if username is empty
-	if (username.trim() === '') errors.username = 'Please enter a valid username';
+	if (username.trim() === '') errors.username = 'Please enter a username';
 
 	// check if password is empty
 	if (password.trim() === '') errors.password = 'Please enter a password';
