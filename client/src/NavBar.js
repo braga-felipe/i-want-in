@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from 'react-router-dom';
 
 const pages = ['Calendar', 'Events'];
 const settings = ['Profile', 'Dashboard', 'Logout'];
@@ -19,6 +20,8 @@ const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+  const navigate = useNavigate();
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -26,7 +29,10 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleClickNavMenu = (route) => {
+    if (route) {
+      navigate(route, { replace: true });
+    }
     setAnchorElNav(null);
   };
 
@@ -69,12 +75,18 @@ const ResponsiveAppBar = () => {
                 horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              onClose={() => {
+                handleClickNavMenu();
+              }}
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}>
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={page}
+                  onClick={() => {
+                    handleClickNavMenu(`/${page.toLowerCase()}`);
+                  }}>
                   <Typography textAlign='center'>{page}</Typography>
                 </MenuItem>
               ))}
@@ -91,7 +103,9 @@ const ResponsiveAppBar = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => {
+                  handleClickNavMenu(`/${page.toLowerCase()}`);
+                }}
                 sx={{ my: 2, color: 'white', display: 'block' }}>
                 {page}
               </Button>
@@ -120,7 +134,11 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}>
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={() => {
+                    handleClickNavMenu(`/${setting.toLowerCase()}`);
+                  }}>
                   <Typography textAlign='center'>{setting}</Typography>
                 </MenuItem>
               ))}
