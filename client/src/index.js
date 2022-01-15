@@ -5,7 +5,16 @@ import App from './App';
 
 // importing what we need to connect our React app to our GraphQl server.
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { uri } from './config';
+import { setContext } from 'apollo-link-context';
+
+const authLink = setContext(() => {
+  const token = localStorage.getItem('jwtToken');
+  return {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
 
 // this client will have all the information about our GraphQL server
 const client = new ApolloClient({

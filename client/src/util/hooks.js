@@ -10,7 +10,6 @@ export const useForm = (callback, initialState = {}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     callback({ variables: formState });
-    // clean up the input fields
   };
 
   return {

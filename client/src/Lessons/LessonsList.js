@@ -2,8 +2,6 @@ import * as React from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router';
 
-import LessonItem from './LessonItem';
-
 //MUI Imports
 import {
   styled,
@@ -11,7 +9,6 @@ import {
   AccordionSummary as MuiAccordionSummary,
   AccordionDetails as MuiAccordionDetails,
   Typography,
-  Link,
   Button,
 } from '@mui/material';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';

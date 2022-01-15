@@ -13,6 +13,7 @@ import LogIn from './Main/LogIn';
 import Registration from './Main/Registration';
 import UserDashboard from './Users/Dashboard';
 import LessonsList from './Lessons/LessonsList';
+import CreateLesson from './Lessons/CreateLesson';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route extact path='/register' element={<Registration />} />
             <Route extact path='/dashboard' element={<UserDashboard />} />
             <Route extact path='/events' element={<LessonsList />} />
+            <Route extact path='/create-lesson' element={<CreateLesson />} />
           </Routes>
         </Container>
       </Router>
