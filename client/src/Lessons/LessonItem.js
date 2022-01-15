@@ -1,14 +1,10 @@
-import React from 'react';
+import * as React from 'react';
+import AccordionComponent from '../mui/Accordion';
 
-export default function LessonItem({ lesson }) {
+export default function LessonItem({ lesson, idx }) {
   return (
     <div className='lesson-item'>
-      <h1>{lesson.title}</h1>
-      <h2>
-        Teachers: {lesson.teachers.map((teacher) => `${teacher.username} `)}
-      </h2>
-      <h2>Location: {lesson.location}</h2>
-      <h2>Time: {lesson.time}</h2>
+      <AccordionComponent lesson={lesson} idx={idx} key={lesson.id} />
     </div>
   );
 }

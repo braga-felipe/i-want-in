@@ -88,8 +88,10 @@ module.exports = {
     },
 
     async deleteLesson(_, { lessonId }) {
+      console.log('deleting lesson ' + lessonId);
       try {
         const lesson = await Lesson.findById(lessonId);
+        console.log({ lesson });
         if (lesson) {
           await updateUser(lessonId, 'delete');
           const lessonTitle = lesson.title;

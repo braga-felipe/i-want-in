@@ -12,7 +12,7 @@ import Home from './Main/Home';
 import LogIn from './Main/LogIn';
 import Registration from './Main/Registration';
 import UserDashboard from './Users/Dashboard';
-import LessonsList from './Lessons/LessonsList';
+import LessonsList from './Lessons/LessonList2';
 import CreateLesson from './Lessons/CreateLesson';
 import EventCard from './Lessons/EventCard';
 function App() {
