@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router';
 
@@ -14,6 +14,7 @@ import {
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
 export default function LessonsList() {
+  useEffect(() => {});
   const { loading, data } = useQuery(FETCH_LESSONS_QUERY);
 
   const navigate = useNavigate();
@@ -83,7 +84,7 @@ export default function LessonsList() {
                 <Typography>Time: {lesson.time};</Typography>
                 <Typography>Place: {lesson.location}</Typography>
                 <Button
-                  onClick={() => navigate('/lesson', { replace: true })}
+                  onClick={() => navigate('/card', { replace: true })}
                   variant='contained'
                   sx={{ mt: 1, mb: 2 }}>
                   More info
@@ -95,22 +96,7 @@ export default function LessonsList() {
   );
 }
 
-// original list
-//   return (
-//     <div>
-//       <h1>Lessons List</h1>
-//       {loading ? (
-//         <p>Loading Lessons</p>
-//       ) : (
-//         data.getLessons.map((lesson) => (
-//           <LessonItem key={lesson.id} lesson={lesson} />
-//         ))
-//       )}
-//     </div>
-//   );
-// }
-
-const FETCH_LESSONS_QUERY = gql`
+export const FETCH_LESSONS_QUERY = gql`
   {
     getLessons {
       id

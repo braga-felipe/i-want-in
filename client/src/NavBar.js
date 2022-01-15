@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router-dom';
 const NavBar = () => {
   const { user, logout } = useContext(AuthContext);
 
-  const pages = ['Calendar', 'Events'];
+  const pages = ['Calendar', 'Events', 'Create'];
   const settings = user
     ? ['Profile', 'Dashboard', 'Logout']
     : ['LogIn', 'Register'];

@@ -10,7 +10,6 @@ const {
   validateRegistrationInput,
   validateLoginInput,
 } = require('../../helpers/validators');
-const checkAuth = require('../../helpers/authorizations');
 
 // models
 const User = require('../../models/User');

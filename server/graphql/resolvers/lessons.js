@@ -2,6 +2,9 @@ const Lesson = require('../../models/Lesson');
 const User = require('../../models/User');
 const checkAuth = require('../../helpers/authorizations');
 const { updateUser } = require('../../helpers/updateLogic');
+const { validateCreateInput } = require('../../helpers/validators');
+// UserInputError from Apollo
+const { UserInputError } = require('apollo-server');
 
 module.exports = {
   Query: {
@@ -32,9 +35,21 @@ module.exports = {
       context
     ) {
       console.log('creating a lesson');
+
       // Validate user
       const user = checkAuth(context);
       const _partner = await User.findOne({ username: partner });
+
+      // Validate input
+      const { errors, valid } = validateCreateInput(
+        title,
+        description,
+        location,
+        time
+      );
+      if (!valid) {
+        throw new UserInputError('Errors', { errors });
+      }
 
       // variable to be stored in "teachers" prop of Lesson, if partner is set it will be pushed to the variable teachers.
       const teachers = [{ id: user.id, username: user.username }];

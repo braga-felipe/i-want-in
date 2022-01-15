@@ -72,6 +72,29 @@ exports.validateLoginInput = (username, password) => {
   };
 };
 
+exports.validateCreateInput = (title, description, location, time) => {
+  // object to store the errors and to later check if the errors object is empty
+  const errors = {};
+
+  // check if title input is empty
+  if (title.trim() === '') errors.title = 'Please enter a title';
+
+  // check if description input is empty
+  if (description.trim() === '')
+    errors.description = 'Please enter a description';
+
+  // check if location input is empty
+  if (location.trim() === '') errors.location = 'Please enter a location';
+
+  // check if time input is empty
+  if (time.trim() === '') errors.time = 'Please select date';
+
+  return {
+    errors,
+    valid: !Object.keys(errors).length,
+  };
+};
+
 // old phone number validation
 // // check if phone input is empty
 // if (phone.trim() === '') errors.phone = 'Please enter a phone number';

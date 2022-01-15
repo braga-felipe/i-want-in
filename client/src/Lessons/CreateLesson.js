@@ -6,6 +6,8 @@ import { AuthContext } from '../context/auth';
 import { useForm } from '../util/hooks';
 import { TextField, Button, Container } from '@mui/material';
 
+import { FETCH_LESSONS_QUERY } from './LessonsList';
+
 export default function CreateLesson() {
   const context = useContext(AuthContext);
 
@@ -21,9 +23,8 @@ export default function CreateLesson() {
 
   const [addLesson, { loading }] = useMutation(CREATE_LESSON, {
     update(_, result) {
-      console.log(result);
       // TODO: implement logic to navigate to Component with id
-      // navigate('/lesson:id', {replace: true});
+      navigate('/events', { replace: true });
     },
     onError(err) {
       console.log({ err });
@@ -32,6 +33,7 @@ export default function CreateLesson() {
           err.graphQLErrors[0] ? err.graphQLErrors[0].extensions.errors : {}
         );
     },
+    refetchQueries: [{ query: FETCH_LESSONS_QUERY }],
   });
 
   // extract state, onChange and onSubmit from useForm hook
