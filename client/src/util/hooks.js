@@ -10,6 +10,7 @@ export const useForm = (callback, initialState = {}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     callback({ variables: formState });
+    setFormState(initialState);
   };
 
   return {
