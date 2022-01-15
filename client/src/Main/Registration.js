@@ -6,9 +6,25 @@ import { gql, useMutation } from '@apollo/client';
 import { AuthContext } from '../context/auth';
 import { useForm } from '../util/hooks';
 
-const LOGIN_USER = gql`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
+const REGISTER_USER = gql`
+  mutation register(
+    $first_name: String!
+    $last_name: String!
+    $email: String!
+    $username: String!
+    $password: String!
+    $confirm_password: String!
+  ) {
+    register(
+      registerInput: {
+        first_name: $first_name
+        last_name: $last_name
+        email: $email
+        username: $username
+        password: $password
+        confirm_password: $confirm_password
+      }
+    ) {
       id
       email
       username
@@ -18,7 +34,7 @@ const LOGIN_USER = gql`
   }
 `;
 
-export default function LogIn() {
+export default function Registration() {
   const context = useContext(AuthContext);
 
   // errors object to check valid user input
@@ -28,39 +44,44 @@ export default function LogIn() {
   const navigate = useNavigate();
 
   // gql mutation hook
-  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    // we deconstruct the "result" object to get "login" from the "data" property, and pass an alias ("userData") to it for better readibility
-    update(_, { data: { login: userData } }) {
+  const [addUser, { loading }] = useMutation(REGISTER_USER, {
+    update(_, { data: { register: userData } }) {
+      // we deconstruct the "result" object to get "register" from the "data" property, and pass an alias ("userData") to it for better readibility
       context.login(userData);
       navigate('/', { replace: true });
     },
     onError(err) {
       // set the errors from gql to the errors object
-      if (err) {
-        console.log(err.graphQLErrors[0].extensions.errors);
+      if (err)
         setErrors(
           err.graphQLErrors[0] ? err.graphQLErrors[0].extensions.errors : {}
         );
-        console.log(errors);
-      }
     },
   });
 
   // extract state, onChange and onSubmit from useForm hook
-  const { handleChange, handleSubmit, formState } = useForm(loginUser, {
+  const { handleChange, handleSubmit, formState } = useForm(addUser, {
+    first_name: '',
+    last_name: '',
+    email: '',
     username: '',
     password: '',
+    confirm_password: '',
   });
 
   // array of input fields used to generate TextFields modularly
   const inputFields = [
+    { label: 'First Name', name: 'first_name' },
+    { label: 'Last Name', name: 'last_name' },
+    { label: 'Email', name: 'email' },
     { label: 'Username', name: 'username' },
     { label: 'Password', name: 'password' },
+    { label: 'Confirm Password', name: 'confirm_password' },
   ];
 
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>Log In</h1>
+      <h1 style={{ textAlign: 'center' }}>Create an account</h1>
       <Container maxWidth='xs'>
         <form
           onSubmit={handleSubmit}
@@ -81,13 +102,7 @@ export default function LogIn() {
                 value={formState[field.name]}
                 error={errors[field.name] ? true : false}
                 type={field.name.includes('password') ? 'password' : ''}
-                helperText={
-                  errors[field.name]
-                    ? errors[field.name]
-                    : errors.general
-                    ? 'Wrong credentials'
-                    : ''
-                }
+                helperText={errors[field.name] ? errors[field.name] : ''}
               />
             ))}
             <Button
@@ -101,8 +116,8 @@ export default function LogIn() {
         </form>
         <Grid container>
           <Grid item>
-            <Link href='/register' variant='body2'>
-              {"Don't have an account? Sign Up"}
+            <Link href='/login' variant='body2'>
+              {'Already have an account? Log In'}
             </Link>
           </Grid>
         </Grid>

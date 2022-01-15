@@ -1,26 +1,41 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import React, { useContext } from 'react';
+
+//mui imports
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+
+import { AuthContext } from './context/auth';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Calendar', 'Events'];
-const settings = ['Profile', 'Dashboard', 'Logout'];
+const NavBar = () => {
+  const { user, logout } = useContext(AuthContext);
 
-const ResponsiveAppBar = () => {
+  const pages = ['Calendar', 'Events'];
+  const settings = user
+    ? ['Profile', 'Dashboard', 'Logout']
+    : ['LogIn', 'Register'];
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const navigate = useNavigate();
+
+  const logOutAndNavigate = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -41,15 +56,19 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar position='static'>
+    <AppBar className='nav-bar' position='static'>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <Typography
             variant='h6'
             noWrap
             component='div'
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
-            LOGO
+            sx={{
+              fontFamily: 'Ubuntu',
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+            }}>
+            WantIn
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -96,9 +115,14 @@ const ResponsiveAppBar = () => {
             variant='h6'
             noWrap
             component='div'
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            I-Want-In
+            sx={{
+              fontFamily: 'Ubuntu',
+              flexGrow: 1,
+              display: { xs: 'flex', md: 'none' },
+            }}>
+            WantIn
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
@@ -115,7 +139,10 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                <Avatar
+                  alt={user ? `${user.username[0].toUpperCase()}` : 'U'}
+                  src='/static/images/avatar/2.jpg'
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -133,15 +160,24 @@ const ResponsiveAppBar = () => {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}>
-              {settings.map((setting) => (
-                <MenuItem
-                  key={setting}
-                  onClick={() => {
-                    handleClickNavMenu(`/${setting.toLowerCase()}`);
-                  }}>
-                  <Typography textAlign='center'>{setting}</Typography>
-                </MenuItem>
-              ))}
+              {settings.map((setting) => {
+                if (setting === 'Logout') {
+                  return (
+                    <MenuItem key={setting} onClick={logOutAndNavigate}>
+                      <Typography textAlign='center'>{setting}</Typography>
+                    </MenuItem>
+                  );
+                }
+                return (
+                  <MenuItem
+                    key={setting}
+                    onClick={() => {
+                      handleClickNavMenu(`/${setting.toLowerCase()}`);
+                    }}>
+                    <Typography textAlign='center'>{setting}</Typography>
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
         </Toolbar>
@@ -149,4 +185,4 @@ const ResponsiveAppBar = () => {
     </AppBar>
   );
 };
-export default ResponsiveAppBar;
+export default NavBar;

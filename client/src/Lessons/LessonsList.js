@@ -12,9 +12,6 @@ import Typography from '@mui/material/Typography';
 
 export default function LessonsList() {
   const { loading, data } = useQuery(FETCH_LESSONS_QUERY);
-  if (data) {
-    console.log(data.getLessons);
-  }
 
   // MUI Accordion helpers
   const Accordion = styled((props) => (
@@ -56,6 +53,7 @@ export default function LessonsList() {
   const [expanded, setExpanded] = React.useState('panel1');
 
   const handleChange = (panel) => (event, newExpanded) => {
+    console.log('handleChange');
     setExpanded(newExpanded ? panel : false);
   };
 
@@ -65,14 +63,14 @@ export default function LessonsList() {
       <h1>Lessons List</h1>
       {loading
         ? 'Loading lessons...'
-        : data.getLessons.map((lesson) => (
+        : data.getLessons.map((lesson, idx) => (
             <Accordion
               key={lesson.id}
-              expanded={expanded === 'panel1'}
-              onChange={handleChange('panel1')}>
+              expanded={expanded === `panel${idx}`}
+              onChange={handleChange(`panel${idx}`)}>
               <AccordionSummary
-                aria-controls='panel1d-content'
-                id='panel1d-header'>
+                aria-controls={`panel${idx}d-content`}
+                id={`panel${idx}d-header`}>
                 <Typography>{lesson.title}</Typography>
               </AccordionSummary>
               <AccordionDetails>
