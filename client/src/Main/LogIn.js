@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { Navigate } from 'react-router-dom';
+
 import { Grid, Link, TextField, Button, Container } from '@mui/material';
 import { gql, useMutation } from '@apollo/client';
 
@@ -21,12 +21,17 @@ const LOGIN_USER = gql`
 
 export default function LogIn() {
   const context = useContext(AuthContext);
-  const { user } = useContext(AuthContext);
+
   // errors object to check valid user input
   const [errors, setErrors] = useState({});
 
   // hook for routing on submition of form
   const navigate = useNavigate();
+
+  // if user is not logged in, redirect to the home page
+  useEffect(() => {
+    context.user && navigate('/', { replace: true });
+  });
 
   // gql mutation hook
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
@@ -57,9 +62,7 @@ export default function LogIn() {
     { label: 'Password', name: 'password' },
   ];
 
-  return user ? (
-    <Navigate replace to='/' />
-  ) : (
+  return (
     <div>
       <h1 style={{ textAlign: 'center' }}>Log In</h1>
       <Container maxWidth='xs'>

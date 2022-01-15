@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router';
 import { AuthContext } from '../context/auth';
 
-exports.authRedirect = () => {
+export function useRedirect() {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  return user ? <Navigate replace to='/' /> : false;
-};
+  return user ? navigate('/', { replace: true }) : true;
+}

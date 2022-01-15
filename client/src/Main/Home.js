@@ -7,7 +7,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>{user ? `Welcome, ${user.username}` : 'Welcome!'}</h1>
+      <h1>{user ? `Welcome, ${user.username}!` : 'Welcome to WantIn!'}</h1>
     </div>
   );
 }
