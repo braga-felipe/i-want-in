@@ -1,17 +1,25 @@
+import * as React from 'react';
 import { gql, useQuery } from '@apollo/client';
+import { useNavigate } from 'react-router';
+
 import LessonItem from './LessonItem';
 
 //MUI Imports
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+  styled,
+  Accordion as MuiAccordion,
+  AccordionSummary as MuiAccordionSummary,
+  AccordionDetails as MuiAccordionDetails,
+  Typography,
+  Link,
+  Button,
+} from '@mui/material';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import MuiAccordion from '@mui/material/Accordion';
-import MuiAccordionSummary from '@mui/material/AccordionSummary';
-import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
 
 export default function LessonsList() {
   const { loading, data } = useQuery(FETCH_LESSONS_QUERY);
+
+  const navigate = useNavigate();
 
   // MUI Accordion helpers
   const Accordion = styled((props) => (
@@ -50,7 +58,7 @@ export default function LessonsList() {
     borderTop: '1px solid rgba(0, 0, 0, .125)',
   }));
 
-  const [expanded, setExpanded] = React.useState('panel1');
+  const [expanded, setExpanded] = React.useState('');
 
   const handleChange = (panel) => (event, newExpanded) => {
     console.log('handleChange');
@@ -77,6 +85,12 @@ export default function LessonsList() {
                 <Typography>Description: {lesson.description};</Typography>
                 <Typography>Time: {lesson.time};</Typography>
                 <Typography>Place: {lesson.location}</Typography>
+                <Button
+                  onClick={() => navigate('/lesson', { replace: true })}
+                  variant='contained'
+                  sx={{ mt: 1, mb: 2 }}>
+                  More info
+                </Button>
               </AccordionDetails>
             </Accordion>
           ))}
