@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Navigate } from 'react-router-dom';
 import { Grid, Link, TextField, Button, Container } from '@mui/material';
 import { gql, useMutation } from '@apollo/client';
 
@@ -20,7 +21,7 @@ const LOGIN_USER = gql`
 
 export default function LogIn() {
   const context = useContext(AuthContext);
-
+  const { user } = useContext(AuthContext);
   // errors object to check valid user input
   const [errors, setErrors] = useState({});
 
@@ -37,11 +38,9 @@ export default function LogIn() {
     onError(err) {
       // set the errors from gql to the errors object
       if (err) {
-        console.log(err.graphQLErrors[0].extensions.errors);
         setErrors(
           err.graphQLErrors[0] ? err.graphQLErrors[0].extensions.errors : {}
         );
-        console.log(errors);
       }
     },
   });
@@ -58,7 +57,9 @@ export default function LogIn() {
     { label: 'Password', name: 'password' },
   ];
 
-  return (
+  return user ? (
+    <Navigate replace to='/' />
+  ) : (
     <div>
       <h1 style={{ textAlign: 'center' }}>Log In</h1>
       <Container maxWidth='xs'>

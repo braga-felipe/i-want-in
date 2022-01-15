@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Navigate } from 'react-router-dom';
 import { Grid, Link, TextField, Button, Container } from '@mui/material';
 import { gql, useMutation } from '@apollo/client';
 
@@ -36,6 +37,7 @@ const REGISTER_USER = gql`
 
 export default function Registration() {
   const context = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   // errors object to check valid user input
   const [errors, setErrors] = useState({});
@@ -79,7 +81,9 @@ export default function Registration() {
     { label: 'Confirm Password', name: 'confirm_password' },
   ];
 
-  return (
+  return user ? (
+    <Navigate reaplace to='/' />
+  ) : (
     <div>
       <h1 style={{ textAlign: 'center' }}>Create an account</h1>
       <Container maxWidth='xs'>
