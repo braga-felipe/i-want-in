@@ -12,7 +12,7 @@ import Home from './Main/Home';
 import LogIn from './Main/LogIn';
 import Registration from './Main/Registration';
 import UserDashboard from './Users/Dashboard';
-import LessonsList from './Lessons/LessonList2';
+import LessonsList from './Lessons/LessonsList';
 import CreateLesson from './Lessons/CreateLesson';
 import EventCard from './Lessons/EventCard';
 function App() {
@@ -26,7 +26,11 @@ function App() {
             <Route extact path='/' element={<Home />} />
             <Route extact path='/login' element={<LogIn />} />
             <Route extact path='/register' element={<Registration />} />
-            <Route extact path='/dashboard' element={<UserDashboard />} />
+            <Route
+              extact
+              path='/dashboard/:userId'
+              element={<UserDashboard />}
+            />
             <Route extact path='/events' element={<LessonsList />} />
             <Route extact path='/create' element={<CreateLesson />} />
             <Route extact path='/card/:lessonId' element={<EventCard />} />

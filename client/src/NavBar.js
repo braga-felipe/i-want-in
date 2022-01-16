@@ -168,6 +168,17 @@ const NavBar = () => {
                     </MenuItem>
                   );
                 }
+                if (setting === 'Dashboard') {
+                  return (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => {
+                        navigate(`/dashboard/${user.id}`);
+                      }}>
+                      <Typography textAlign='center'>{setting}</Typography>
+                    </MenuItem>
+                  );
+                }
                 return (
                   <MenuItem
                     key={setting}

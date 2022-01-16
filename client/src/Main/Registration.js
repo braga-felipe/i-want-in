@@ -46,7 +46,7 @@ export default function Registration() {
 
   // if user is not logged in, redirect to the home page
   useEffect(() => {
-    context.user && navigate('/', { replace: true });
+    context.user && navigate('/dashboard', { replace: true });
   });
 
   // gql mutation hook

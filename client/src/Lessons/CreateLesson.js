@@ -24,7 +24,7 @@ export default function CreateLesson() {
   const [addLesson, { loading }] = useMutation(CREATE_LESSON, {
     update(_, result) {
       // TODO: implement logic to navigate to Component with id
-      navigate('/events', { replace: true });
+      navigate(`/card/${result.data.createLesson.id}`, { replace: true });
     },
     onError(err) {
       console.log({ err });

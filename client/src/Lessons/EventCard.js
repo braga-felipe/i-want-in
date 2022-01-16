@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useLocation } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
+import ButtonAuth from '../buttons/ButtonAuth';
 
 import {
   Card,
   CardActions,
   CardContent,
   Container,
-  Button,
   Link,
   Typography,
 } from '@mui/material';
@@ -52,8 +52,7 @@ export default function EventCard() {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size='small'>Sign Up</Button>
-              <Button size='small'>Back to Events</Button>
+              <ButtonAuth lesson={lesson} />
             </CardActions>
           </Card>
         )

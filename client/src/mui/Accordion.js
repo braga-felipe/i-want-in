@@ -1,9 +1,6 @@
 // --- GO TO LINE 53 FOR THE COMPONENET ---
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router';
-import { AuthContext } from '../context/auth';
-
-import { gql, useMutation } from '@apollo/client';
 
 import {
   styled,
@@ -53,20 +50,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 export default function AccordionComponent({ lesson, idx }) {
   const [expanded, setExpanded] = React.useState('');
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-
-  console.log('lesson id: ' + lesson.id);
-  const [deleteLesson] = useMutation(DELETE_LESSON, {
-    variables: { lessonId: lesson.id },
-    update(_, result) {
-      console.log('lesson ID: ', lesson.id);
-      console.log(result);
-      alert(result.data.deleteLesson);
-    },
-    onError(err) {
-      console.log({ err });
-    },
-  });
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -93,25 +76,8 @@ export default function AccordionComponent({ lesson, idx }) {
             sx={{ mt: 1, mb: 2 }}>
             More info
           </Button>
-          {user &&
-            lesson.teachers
-              .flatMap((teacher) => teacher.username)
-              .includes(user.username) && (
-              <Button
-                onClick={deleteLesson}
-                variant='contained'
-                sx={{ ml: 2, mt: 1, mb: 2 }}>
-                Delete
-              </Button>
-            )}
         </AccordionDetails>
       </Accordion>
     </div>
   );
 }
-
-const DELETE_LESSON = gql`
-  mutation deleteLesson($lessonId: ID!) {
-    deleteLesson(lessonId: $lessonId)
-  }
-`;
