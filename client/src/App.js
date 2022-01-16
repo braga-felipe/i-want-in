@@ -29,7 +29,7 @@ function App() {
             <Route extact path='/dashboard' element={<UserDashboard />} />
             <Route extact path='/events' element={<LessonsList />} />
             <Route extact path='/create' element={<CreateLesson />} />
-            <Route extact path='/card' element={<EventCard />} />
+            <Route extact path='/card/:lessonId' element={<EventCard />} />
           </Routes>
         </Container>
       </Router>

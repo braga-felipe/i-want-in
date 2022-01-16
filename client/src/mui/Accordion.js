@@ -100,7 +100,7 @@ export default function AccordionComponent({ lesson, idx }) {
               <Button
                 onClick={deleteLesson}
                 variant='contained'
-                sx={{ ml: 21, mt: 1, mb: 2 }}>
+                sx={{ ml: 2, mt: 1, mb: 2 }}>
                 Delete
               </Button>
             )}
