@@ -15,6 +15,8 @@ import UserDashboard from './Users/Dashboard';
 import LessonsList from './Lessons/LessonsList';
 import CreateLesson from './Lessons/CreateLesson';
 import EventCard from './Lessons/EventCard';
+import ManageLesson from './Lessons/ManageLesson';
+
 function App() {
   return (
     <AuthProvider>
@@ -34,6 +36,7 @@ function App() {
             <Route extact path='/events' element={<LessonsList />} />
             <Route extact path='/create' element={<CreateLesson />} />
             <Route extact path='/card/:lessonId' element={<EventCard />} />
+            <Route extact path='/manage/:lessonId' element={<ManageLesson />} />
           </Routes>
         </Container>
       </Router>

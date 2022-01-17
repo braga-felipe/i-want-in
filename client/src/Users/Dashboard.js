@@ -2,6 +2,9 @@ import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { useLocation } from 'react-router-dom';
 
+import Upcoming from './Upcoming';
+import { Container } from '@mui/material';
+
 export default function Dashboard() {
   const userId = useLocation().pathname.split('/')[2];
 
@@ -13,12 +16,13 @@ export default function Dashboard() {
   });
 
   const user = loading ? '' : data.getUser;
-  console.log(user);
 
   return (
-    <div>
-      <h1>User dashboard</h1>
-    </div>
+    <Container>
+      <h1>{`${user.first_name}'s dashboard`}</h1>
+      <h4>Upcoming:</h4>
+      <Upcoming classes={user.classes} />
+    </Container>
   );
 }
 
@@ -26,23 +30,18 @@ const FETCH_ONE_USER = gql`
   query getUser($userId: ID!) {
     getUser(userId: $userId) {
       id
-      username
       first_name
       last_name
       email
+      username
+      created_at
       classes {
         id
         title
-        teachers {
-          id
-        }
       }
       signedup_to {
         id
         title
-        teachers {
-          id
-        }
       }
     }
   }
