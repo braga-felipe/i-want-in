@@ -8,8 +8,8 @@ export default function Upcoming({ classes }) {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         {classList.map((item, i) => (
-          <Grid item xs={8} key={i}>
-            <UpcomingItem item={item} />
+          <Grid item xs={15} key={i}>
+            <UpcomingItem lesson={item} />
           </Grid>
         ))}
       </Grid>

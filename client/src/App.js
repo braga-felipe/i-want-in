@@ -16,6 +16,7 @@ import LessonsList from './Lessons/LessonsList';
 import CreateLesson from './Lessons/CreateLesson';
 import EventCard from './Lessons/EventCard';
 import ManageLesson from './Lessons/ManageLesson';
+import SignUp from './Lessons/SignUp';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route extact path='/create' element={<CreateLesson />} />
             <Route extact path='/card/:lessonId' element={<EventCard />} />
             <Route extact path='/manage/:lessonId' element={<ManageLesson />} />
+            <Route extact path='/signup/:lessonId' element={<SignUp />} />
           </Routes>
         </Container>
       </Router>

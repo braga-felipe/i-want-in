@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useLocation } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import ButtonAuth from '../buttons/ButtonAuth';
+import { FETCH_ONE_USER } from '../Users/Dashboard';
 
 import {
   Card,
@@ -16,19 +17,19 @@ export default function EventCard() {
   // getting lessonID from url using "useLocation" hook
   const lessonId = useLocation().pathname.split('/')[2];
 
-  // gql query
+  // --- LESSON QUERY ---
   const { loading, error, data } = useQuery(FETCH_ONE_LESSON, {
     variables: { lessonId },
   });
   if (error) return `Error! ${error.message}`;
 
-  console.log(data);
-  // wait for data to load
+  // wait for data to load and organize it
   const lesson = loading ? '' : data.getLesson;
   const teachers = loading
     ? ''
     : lesson.teachers.flatMap((teacher) => teacher.username);
   console.log({ teachers });
+
   return (
     <Container>
       {

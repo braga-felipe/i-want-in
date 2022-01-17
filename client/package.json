@@ -15,7 +15,7 @@
     "apollo-link-context": "^1.0.20",
     "apollo-link-http": "^1.5.17",
     "jwt-decode": "^3.1.2",
-    "react": "16.0.0",
+    "react": "next",
     "react-dom": "next",
     "react-router-dom": "^6.2.1",
     "react-scripts": "^3.0.1",

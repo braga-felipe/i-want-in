@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { Container } from '@mui/material';
 import LessonItem from './LessonItem';

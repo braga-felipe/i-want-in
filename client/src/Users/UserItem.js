@@ -2,7 +2,6 @@ import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 
 import { Item } from './UpcomingItem';
-import { Button } from '@mui/material';
 
 export default function UserItem({ userId }) {
   const { loading, data } = useQuery(FETCH_USER_NAMES, {

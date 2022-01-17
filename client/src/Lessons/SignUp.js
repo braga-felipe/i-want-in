@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 import { Grid, Link, TextField, Button, Container } from '@mui/material';
 import { gql, useMutation } from '@apollo/client';
@@ -7,47 +7,15 @@ import { gql, useMutation } from '@apollo/client';
 import { AuthContext } from '../context/auth';
 import { useForm } from '../util/hooks';
 
-const REGISTER_USER = gql`
-  mutation register(
-    $first_name: String!
-    $last_name: String!
-    $email: String!
-    $username: String!
-    $password: String!
-    $confirm_password: String!
-  ) {
-    register(
-      registerInput: {
-        first_name: $first_name
-        last_name: $last_name
-        email: $email
-        username: $username
-        password: $password
-        confirm_password: $confirm_password
-      }
-    ) {
-      id
-      email
-      username
-      created_at
-      token
-    }
-  }
-`;
-
-export default function Registration() {
+export default function SignUp() {
   const context = useContext(AuthContext);
+  const lessonId = useLocation().pathname.split('/')[2];
 
   // errors object to check valid user input
   const [errors, setErrors] = useState({});
 
   // hook for routing on submition of form
   const navigate = useNavigate();
-
-  // if user is not logged in, redirect to the home page
-  useEffect(() => {
-    context.user && navigate(`dashboard/${context.user.id}`, { replace: true });
-  });
 
   // gql mutation hook
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
@@ -131,3 +99,31 @@ export default function Registration() {
     </div>
   );
 }
+
+const REGISTER_USER = gql`
+  mutation register(
+    $first_name: String!
+    $last_name: String!
+    $email: String!
+    $username: String!
+    $password: String!
+    $confirm_password: String!
+  ) {
+    register(
+      registerInput: {
+        first_name: $first_name
+        last_name: $last_name
+        email: $email
+        username: $username
+        password: $password
+        confirm_password: $confirm_password
+      }
+    ) {
+      id
+      email
+      username
+      created_at
+      token
+    }
+  }
+`;

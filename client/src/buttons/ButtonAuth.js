@@ -1,13 +1,18 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/auth';
 import { useNavigate } from 'react-router-dom';
-
+import { Item } from '../Users/UpcomingItem';
 import { Container, Button } from '@mui/material';
 
 import { gql, useMutation } from '@apollo/client';
 const DELETE_LESSON = gql`
   mutation deleteLesson($lessonId: ID!) {
     deleteLesson(lessonId: $lessonId)
+  }
+`;
+const SIGN_UP = gql`
+  mutation signupToLesson($lessonId: ID!, $userId: ID!) {
+    signupToLesson(lessonId: $lessonId, userId: $userId)
   }
 `;
 
@@ -27,7 +32,7 @@ export default function ButtonAuth({ lesson, idx }) {
       console.log({ err });
     },
   });
-
+  console.log({ user });
   return (
     <Container>
       {!user ? (
@@ -53,10 +58,7 @@ export default function ButtonAuth({ lesson, idx }) {
           </Button>
         </>
       ) : (
-        <Button
-          variant='contained'
-          sx={{ ml: 2, mt: 1, mb: 2 }}
-          onClick={() => navigate(`/signup/${lesson.id}`, { replace: true })}>
+        <Button variant='contained' sx={{ ml: 2, mt: 1, mb: 2 }}>
           Sign Up
         </Button>
       )}
@@ -69,6 +71,7 @@ export default function ButtonAuth({ lesson, idx }) {
         {' '}
         Back to Events
       </Button>
+      <Item> You're signed up to this</Item>
     </Container>
   );
 }
