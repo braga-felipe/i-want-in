@@ -42,10 +42,8 @@ export default function ButtonAuth({ lesson, idx }) {
           <Button
             variant='contained'
             sx={{ ml: 2, mt: 1, mb: 2 }}
-            onClick={() =>
-              navigate(`/edit-event/${lesson.id}`, { replace: true })
-            }>
-            Edit
+            onClick={() => navigate(`/manage/${lesson.id}`, { replace: true })}>
+            Manage
           </Button>
           <Button
             variant='contained'

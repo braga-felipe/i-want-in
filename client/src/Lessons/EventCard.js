@@ -17,9 +17,12 @@ export default function EventCard() {
   const lessonId = useLocation().pathname.split('/')[2];
 
   // gql query
-  const { loading, data } = useQuery(FETCH_ONE_LESSON, {
+  const { loading, error, data } = useQuery(FETCH_ONE_LESSON, {
     variables: { lessonId },
   });
+  if (error) return `Error! ${error.message}`;
+
+  console.log(data);
   // wait for data to load
   const lesson = loading ? '' : data.getLesson;
   const teachers = loading
@@ -75,8 +78,6 @@ const FETCH_ONE_LESSON = gql`
       }
       students {
         id
-        first_name
-        last_name
       }
       studentCount
       created_at

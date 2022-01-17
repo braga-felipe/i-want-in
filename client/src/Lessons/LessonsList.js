@@ -4,7 +4,6 @@ import { Container } from '@mui/material';
 import LessonItem from './LessonItem';
 
 export default function LessonsList() {
-  useEffect(() => {});
   const { loading, data } = useQuery(FETCH_LESSONS_QUERY);
 
   return (

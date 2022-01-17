@@ -18,8 +18,10 @@ module.exports = {
     },
 
     async getLesson(_, { lessonId }) {
+      console.log('getting lessons');
       try {
         const lesson = await Lesson.findById(lessonId);
+        console.log('students: ', lesson.students);
         if (lesson) return lesson;
         else throw new Error('Lesson not found');
       } catch (err) {
@@ -34,8 +36,6 @@ module.exports = {
       { title, description, location, time, partner },
       context
     ) {
-      console.log('creating a lesson');
-
       // Validate user
       const user = checkAuth(context);
       const _partner = await User.findOne({ username: partner });
@@ -88,7 +88,6 @@ module.exports = {
     },
 
     async deleteLesson(_, { lessonId }) {
-      console.log('deleting lesson ' + lessonId);
       try {
         const lesson = await Lesson.findById(lessonId);
         console.log({ lesson });

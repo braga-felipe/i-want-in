@@ -184,13 +184,14 @@ module.exports = {
           if (
             student.signedup_to.filter((lesson) => lesson.id === lessonId)
               .length
-          )
+          ) {
             return 'You are already registred to this class.';
+          }
 
           // update user and lesson
-          updateUser(lessonId, 'register', userId);
-          // get teacher(s) name(s)
+          await updateUser(lessonId, 'register', userId);
 
+          // get teacher(s) name(s)
           const teachers = lesson.teachers
             .flatMap((teacher) => teacher.username)
             .join(' and ');

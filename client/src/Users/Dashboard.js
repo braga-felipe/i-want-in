@@ -19,14 +19,14 @@ export default function Dashboard() {
 
   return (
     <Container>
-      <h1>{`${user.first_name}'s dashboard`}</h1>
-      <h4>Upcoming:</h4>
+      <h2>{`${user.first_name}'s dashboard`}</h2>
+      <h3>Upcoming:</h3>
       <Upcoming classes={user.classes} />
     </Container>
   );
 }
 
-const FETCH_ONE_USER = gql`
+export const FETCH_ONE_USER = gql`
   query getUser($userId: ID!) {
     getUser(userId: $userId) {
       id
