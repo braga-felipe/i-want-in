@@ -14,9 +14,8 @@ import Registration from './Main/Registration';
 import UserDashboard from './Users/Dashboard';
 import LessonsList from './Lessons/LessonsList';
 import CreateLesson from './Lessons/CreateLesson';
-import EventCard from './Lessons/EventCard';
+import LessonCard from './Lessons/LessonCard';
 import ManageLesson from './Lessons/ManageLesson';
-import SignUp from './Lessons/SignUp';
 
 function App() {
   return (
@@ -34,11 +33,15 @@ function App() {
               path='/dashboard/:userId'
               element={<UserDashboard />}
             />
-            <Route extact path='/events' element={<LessonsList />} />
+            <Route
+              extact
+              path='/register/dashboard/:userId'
+              element={<UserDashboard />}
+            />
+            <Route extact path='/lessons' element={<LessonsList />} />
             <Route extact path='/create' element={<CreateLesson />} />
-            <Route extact path='/card/:lessonId' element={<EventCard />} />
+            <Route extact path='/card/:lessonId' element={<LessonCard />} />
             <Route extact path='/manage/:lessonId' element={<ManageLesson />} />
-            <Route extact path='/signup/:lessonId' element={<SignUp />} />
           </Routes>
         </Container>
       </Router>

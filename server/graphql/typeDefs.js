@@ -19,6 +19,7 @@ module.exports = gql`
     description: String!
     location: String!
     time: String!
+    date: String!
     created_at: String!
     teachers: [Teacher]
     students: [Student]
@@ -34,13 +35,17 @@ module.exports = gql`
 
   type Student {
     id: ID!
+    username: String!
     first_name: String!
     last_name: String!
+    email: String!
   }
 
   type Teacher {
     id: ID!
     username: String!
+    first_name: String!
+    last_name: String!
   }
 
   type Query {
@@ -72,6 +77,7 @@ module.exports = gql`
       description: String!
       location: String!
       time: String!
+      date: String!
       partner: String
     ): Lesson!
     deleteLesson(lessonId: ID!): String!

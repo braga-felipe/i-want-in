@@ -29,11 +29,12 @@ export default function LogIn() {
 
   // hook for routing on submition of form
   const navigate = useNavigate();
-
+  const navidateToDashboard = () => {
+    navigate(`/dashboard/${context.user.id}`, { replace: true });
+  };
   // if user is not logged in, redirect to the home page
   useEffect(() => {
-    context.user &&
-      navigate(`/dashboard/${context.user.id}`, { replace: true });
+    context.user && navidateToDashboard();
   });
 
   // gql mutation hook
@@ -42,7 +43,7 @@ export default function LogIn() {
     update(_, { data: { login: userData } }) {
       context.login(userData);
       console.log(userData);
-      navigate('/', { replace: true });
+      navidateToDashboard();
     },
     onError(err) {
       // set the errors from gql to the errors object
@@ -102,7 +103,12 @@ export default function LogIn() {
               type='submit'
               fullWidth
               variant='contained'
-              sx={{ mt: 1, mb: 2 }}>
+              sx={{
+                mt: 1,
+                mb: 2,
+                borderRadius: '0px',
+                backgroundColor: '#6D8A96',
+              }}>
               Submit
             </Button>
           </div>

@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router-dom';
 const NavBar = () => {
   const { user, logout } = useContext(AuthContext);
 
-  const pages = ['Calendar', 'Events', 'Create'];
+  const pages = ['Calendar', 'Lessons', 'Create'];
   const settings = user
     ? ['Profile', 'Dashboard', 'Logout']
     : ['LogIn', 'Register'];
@@ -56,7 +56,10 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar className='nav-bar' position='static'>
+    <AppBar
+      className='nav-bar'
+      position='static'
+      sx={{ backgroundColor: '#6D8A96' }}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <Typography

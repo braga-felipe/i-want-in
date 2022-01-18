@@ -68,14 +68,12 @@ const updateUser = async function (lessonId, event, userId = null) {
 
     // if we're signing up to a class we need to updated the user's "signedup_to" property
     if (event === 'register') {
-      console.log('USER NAMES: ', user.first_name, ' ', user.last_name);
       const updatedStudents = [
         ...lesson.students,
         {
           id: user._id,
-          // first_name: user.first_name,
-          // last_name: user.last_name,
-          debug: 'CHECK',
+          first_name: user.first_name,
+          last_name: user.last_name,
         },
       ];
 

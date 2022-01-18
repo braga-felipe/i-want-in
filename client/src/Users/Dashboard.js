@@ -6,7 +6,7 @@ import Upcoming from './Upcoming';
 import { Container } from '@mui/material';
 
 export default function Dashboard() {
-  const userId = useLocation().pathname.split('/')[2];
+  const userId = useLocation().pathname.split('/').pop();
 
   const { loading, data } = useQuery(FETCH_ONE_USER, {
     variables: { userId },
@@ -21,7 +21,7 @@ export default function Dashboard() {
     <Container>
       <h2>{`${user.first_name}'s dashboard`}</h2>
       <h3>Upcoming:</h3>
-      <Upcoming classes={user.classes} />
+      <Upcoming user={user} />
     </Container>
   );
 }

@@ -54,7 +54,7 @@ export default function Registration() {
     update(_, { data: { register: userData } }) {
       // we deconstruct the "result" object to get "register" from the "data" property, and pass an alias ("userData") to it for better readibility
       context.login(userData);
-      navigate('/', { replace: true });
+      navigate(`dashboard/${context.user.id}`);
     },
     onError(err) {
       // set the errors from gql to the errors object
@@ -115,7 +115,12 @@ export default function Registration() {
               type='submit'
               fullWidth
               variant='contained'
-              sx={{ mt: 1, mb: 2 }}>
+              sx={{
+                mt: 1,
+                mb: 2,
+                borderRadius: '0px',
+                backgroundColor: '#6D8A96',
+              }}>
               Submit
             </Button>
           </div>

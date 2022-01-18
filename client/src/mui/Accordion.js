@@ -49,9 +49,13 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function AccordionComponent({ lesson, idx }) {
   const [expanded, setExpanded] = React.useState('');
-  const navigate = useNavigate();
 
-  const handleChange = (panel) => (event, newExpanded) => {
+  const navigate = useNavigate();
+  const navigateToCard = () => {
+    navigate(`/card/${lesson.id}`, { replace: true });
+  };
+
+  const handleChange = (panel) => (_, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
@@ -71,9 +75,14 @@ export default function AccordionComponent({ lesson, idx }) {
           <Typography>Time: {lesson.time};</Typography>
           <Typography>Place: {lesson.location}</Typography>
           <Button
-            onClick={() => navigate(`/card/${lesson.id}`, { replace: true })}
+            onClick={navigateToCard}
             variant='contained'
-            sx={{ mt: 1, mb: 2 }}>
+            sx={{
+              mt: 1,
+              mb: 2,
+              borderRadius: '0px',
+              backgroundColor: '#6D8A96',
+            }}>
             More info
           </Button>
         </AccordionDetails>

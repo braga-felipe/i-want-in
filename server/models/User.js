@@ -11,13 +11,28 @@ const userSchema = new Schema({
     {
       id: String,
       title: String,
+      teachers: [
+        {
+          id: String,
+          username: String,
+          first_name: String,
+          last_name: String,
+        },
+      ],
     },
   ],
   signedup_to: [
     {
       id: String,
       title: String,
-      teacher: String,
+      teachers: [
+        {
+          id: String,
+          username: String,
+          first_name: String,
+          last_name: String,
+        },
+      ],
     },
   ],
 });

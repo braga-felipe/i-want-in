@@ -1,8 +1,17 @@
-import React, { useContext } from 'react';
+import * as React from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../context/auth';
 import { useNavigate } from 'react-router-dom';
-import { Item } from '../Users/UpcomingItem';
-import { Container, Button } from '@mui/material';
+import {
+  Container,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
+} from '@mui/material';
 
 import { gql, useMutation } from '@apollo/client';
 const DELETE_LESSON = gql`
@@ -10,21 +19,45 @@ const DELETE_LESSON = gql`
     deleteLesson(lessonId: $lessonId)
   }
 `;
-const SIGN_UP = gql`
+const SIGNUP_TO_LESSON = gql`
   mutation signupToLesson($lessonId: ID!, $userId: ID!) {
     signupToLesson(lessonId: $lessonId, userId: $userId)
   }
 `;
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction='up' ref={ref} {...props} />;
+});
 
 export default function ButtonAuth({ lesson, idx }) {
   const { user } = useContext(AuthContext);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const teachers = lesson.teachers.flatMap((teacher) => teacher.username);
+
   const navigate = useNavigate();
+  const navidateToLogin = () => {
+    navigate('/login', { replace: true });
+  };
+  const navigateToManageLesson = () => {
+    navigate(`/manage/${lesson.id}`, { replace: true });
+  };
+  const navigateToLessons = () => {
+    navigate('/lessons', { replace: true });
+  };
+
   const [deleteLesson] = useMutation(DELETE_LESSON, {
     variables: { lessonId: lesson.id },
     update(_, result) {
       //TODO: handle the reaload of the "events" page without using 'window.location.reaload()'
-      navigate('/events', { replace: true });
+      navigate('/lessons', { replace: true });
       alert(result.data.deleteLesson);
       window.location.reload();
     },
@@ -32,46 +65,106 @@ export default function ButtonAuth({ lesson, idx }) {
       console.log({ err });
     },
   });
-  console.log({ user });
+
+  const [signupToLesson] = useMutation(SIGNUP_TO_LESSON, {
+    variables: { lessonId: lesson.id, userId: user.id },
+    onError(err) {
+      console.log({ err });
+    },
+  });
+
+  const signupAndClose = () => {
+    if (user) {
+      signupToLesson();
+      handleClose();
+      window.location.reload();
+    } else {
+      navidateToLogin();
+    }
+  };
+
+  const buttonStyle = () => {
+    return {
+      ml: 1,
+      mt: 1,
+      mb: 1,
+      borderRadius: '0px',
+      backgroundColor: '#6D8A96',
+    };
+  };
+
+  const signedButtonStyle = () => {
+    return {
+      ml: 1,
+      mt: 1,
+      mb: 1,
+      borderRadius: '0px',
+      backgroundColor: 'white',
+      color: 'green',
+    };
+  };
+
   return (
     <Container>
       {!user ? (
         <Button
           variant='contained'
-          sx={{ ml: 2, mt: 1, mb: 2 }}
-          onClick={() => navigate('/login', { replace: true })}>
+          sx={buttonStyle()}
+          onClick={navidateToLogin}>
           Sign Up
         </Button>
       ) : teachers.includes(user.username) ? (
         <>
           <Button
             variant='contained'
-            sx={{ ml: 2, mt: 1, mb: 2 }}
-            onClick={() => navigate(`/manage/${lesson.id}`, { replace: true })}>
+            sx={buttonStyle()}
+            onClick={navigateToManageLesson}>
             Manage
           </Button>
-          <Button
-            variant='contained'
-            sx={{ ml: 2, mt: 1, mb: 2 }}
-            onClick={deleteLesson}>
+          <Button variant='contained' sx={buttonStyle()} onClick={deleteLesson}>
             Delete
           </Button>
         </>
-      ) : (
-        <Button variant='contained' sx={{ ml: 2, mt: 1, mb: 2 }}>
-          Sign Up
+      ) : lesson.students.filter((student) => student.id === user.id).length ? (
+        <Button sx={signedButtonStyle()} variant='outlined'>
+          Signed Up
         </Button>
+      ) : (
+        <>
+          <Button
+            variant='contained'
+            sx={buttonStyle()}
+            onClick={handleClickOpen}>
+            Sign Up
+          </Button>
+          <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+            aria-describedby='alert-dialog-slide-description'>
+            <DialogTitle>
+              {'Do you want to sign up to this lesson?'}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id='alert-dialog-slide-description'>
+                You will be added to the list of students, making your contact
+                information available to the instructor.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={signupAndClose}>Confirm</Button>
+            </DialogActions>
+          </Dialog>
+        </>
       )}
       <Button
         variant='contained'
-        sx={{ ml: 2, mt: 1, mb: 2 }}
-        onClick={() => {
-          navigate('/events', { replace: true });
-        }}>
-        {' '}
-        Back to Events
+        sx={buttonStyle()}
+        onClick={navigateToLessons}>
+        Back to Lessons
       </Button>
-      <Item> You're signed up to this</Item>
     </Container>
   );
 }

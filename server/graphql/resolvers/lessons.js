@@ -33,29 +33,44 @@ module.exports = {
   Mutation: {
     async createLesson(
       _,
-      { title, description, location, time, partner },
+      { title, description, location, time, date, partner },
       context
     ) {
       // Validate user
-      const user = checkAuth(context);
+      const userValid = checkAuth(context);
+      const user = await User.findOne({ _id: userValid.id });
       const _partner = await User.findOne({ username: partner });
+      console.log({ _partner }); /*this is ok*/
 
       // Validate input
       const { errors, valid } = validateCreateInput(
         title,
         description,
         location,
-        time
+        time,
+        date
       );
       if (!valid) {
         throw new UserInputError('Errors', { errors });
       }
 
       // variable to be stored in "teachers" prop of Lesson, if partner is set it will be pushed to the variable teachers.
-      const teachers = [{ id: user.id, username: user.username }];
+      const teachers = [
+        {
+          id: user.id,
+          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
+        },
+      ];
       _partner &&
-        teachers.push({ id: _partner._id, username: _partner.username });
-
+        teachers.push({
+          id: _partner._id,
+          username: _partner.username,
+          first_name: _partner.first_name,
+          last_name: _partner.last_name,
+        });
+      console.log({ teachers });
       try {
         // create new instance of Lesson with params
         const lesson = new Lesson({
@@ -63,8 +78,9 @@ module.exports = {
           description,
           location,
           time,
-          created_at: new Date().toISOString(),
+          date,
           teachers,
+          created_at: new Date().toISOString(),
         });
 
         // save instance to database
@@ -80,7 +96,6 @@ module.exports = {
         return {
           ...res._doc,
           id: res.id,
-          teachers: res.teachers,
         };
       } catch (err) {
         console.log(err);

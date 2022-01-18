@@ -6,26 +6,39 @@ import UsersList from '../Users/UsersList';
 import { Container } from '@mui/material';
 
 export default function ManageLesson() {
-  const lessonId = useLocation().pathname.split('/')[2];
+  const lessonId = useLocation().pathname.split('/').pop();
+  console.log({ lessonId });
   const { loading, data } = useQuery(FETCH_STUDENTS_QUERY, {
     variables: { lessonId },
   });
+  console.log({ loading });
+  console.log({ data });
   const studentsId = loading
     ? ''
-    : data.getLesson.students.flatMap((student) => student.id);
-  studentsId && console.log('DATA.GETLESSON: ', data.getLesson);
+    : data && data.getLesson.students.flatMap((student) => student.id);
+
+  const lesson = loading ? '' : data && data.getLesson;
+
   return (
     <Container className='manage-container'>
       <Container className='deatils-container'>
         <h2>Details:</h2>
-        <h3>{`Title: ${studentsId && data.getLesson.title}`}</h3>
-        <h3>{`Location: ${studentsId && data.getLesson.location} Time: ${
-          studentsId && data.getLesson.time
-        }`}</h3>
+        {lesson && (
+          <>
+            <h3>{`Title: ${lesson.title}`}</h3>
+            <h3>
+              {`Location: ${lesson.location},  starting the ${lesson.date} at ${lesson.time}`}{' '}
+            </h3>
+          </>
+        )}
       </Container>
       <Container className='students-container'>
-        <h3>Students ({studentsId && studentsId.length}): </h3>
-        {studentsId && <UsersList studentsId={studentsId}></UsersList>}
+        {studentsId && (
+          <>
+            <h3>Students ({studentsId.length}): </h3>
+            <UsersList studentsId={studentsId}></UsersList>
+          </>
+        )}
       </Container>
     </Container>
   );
@@ -37,6 +50,7 @@ const FETCH_STUDENTS_QUERY = gql`
       title
       description
       time
+      date
       location
       students {
         id

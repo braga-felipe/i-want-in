@@ -1,21 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { gql, useQuery } from '@apollo/client';
-import { styled } from '@mui/material';
-import { Paper, Button, Container } from '@mui/material';
+
+import { Container, Button } from '@mui/material';
+
 import moment from 'moment';
+import { Item } from '../mui/Item';
 
-export const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
-
-export default function UpcomingItem({ lesson }) {
+export default function UpcomingItem({ user, lesson }) {
+  // navigate funtion
   const navigate = useNavigate();
-  const navigateToCard = () => {
+  const navigateToManageCard = () => {
     navigate(`/manage/${lesson.id}`, { replace: true });
+  };
+  const navigateToCard = () => {
+    navigate(`/card/${lesson.id}`, { replace: true });
   };
 
   const { data } = useQuery(FETCH_LESSON_INFO, {
@@ -23,30 +22,27 @@ export default function UpcomingItem({ lesson }) {
   });
 
   const info = data && data.getLesson;
-  console.log(info);
 
   return (
     <Container sx={{ display: 'flex' }}>
-      <Item
-        sx={{
-          backgroundColor: '#6D8A96',
-          color: 'white',
-          fontFamily: 'Ubuntu',
-          fontWeight: 'bold',
-          fontSize: '20px',
-          textAlign: 'center',
-          padding: '15px 15px',
-        }}>
-        {info && moment(info.time).format('ddd')}
-      </Item>
-      <Item>
+      <Item sx={timeStyle()}>{info && moment(info.time).format('ddd')}</Item>
+      <Item sx={titleStyle()}>
         {lesson.title}
-        <Button
-          variant='contained'
-          sx={{ ml: 2, mt: 1, mb: 2 }}
-          onClick={navigateToCard}>
-          Manage
-        </Button>
+        {user && user.classes.filter((item) => item.id === lesson.id).length ? (
+          <Button
+            variant='contained'
+            sx={buttonStyle()}
+            onClick={navigateToManageCard}>
+            Manage
+          </Button>
+        ) : (
+          <Button
+            variant='contained'
+            sx={buttonStyle()}
+            onClick={navigateToCard}>
+            More Info
+          </Button>
+        )}
       </Item>
     </Container>
   );
@@ -57,6 +53,42 @@ const FETCH_LESSON_INFO = gql`
       title
       time
       location
+      teachers {
+        id
+      }
     }
   }
 `;
+
+const timeStyle = () => {
+  return {
+    backgroundColor: '#6D8A96',
+    color: 'white',
+    fontFamily: 'Ubuntu',
+    fontWeight: 'bold',
+    fontSize: '20px',
+    textAlign: 'center',
+    padding: '15px 15px',
+    borderRadius: '0px',
+  };
+};
+
+const titleStyle = () => {
+  return {
+    fontSize: '20px',
+    textAlign: 'center',
+    borderRadius: '0px',
+    width: '100%',
+  };
+};
+
+const buttonStyle = () => {
+  return {
+    float: 'right',
+    ml: 2,
+    mt: 1,
+    mb: 1,
+    borderRadius: '0px',
+    backgroundColor: '#6D8A96',
+  };
+};
