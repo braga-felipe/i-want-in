@@ -24,10 +24,13 @@ export default function UpcomingItem({ user, lesson }) {
   const info = data && data.getLesson;
 
   return (
-    <Container sx={{ display: 'flex' }}>
-      <Item sx={timeStyle()}>{info && moment(info.time).format('ddd')}</Item>
+    <Container sx={{ display: 'flex', width: '100%' }}>
+      <Item sx={timeStyle()}>{info && moment(info.date).format('ddd')}</Item>
       <Item sx={titleStyle()}>
-        {lesson.title}
+        <div style={{ textAlign: 'left' }}>{lesson.title}</div>
+        <div style={{ textAlign: 'left' }}>
+          {moment(lesson.date).format('LT - LL')}
+        </div>
         {user && user.classes.filter((item) => item.id === lesson.id).length ? (
           <Button
             variant='contained'
@@ -51,10 +54,11 @@ const FETCH_LESSON_INFO = gql`
   query getLesson($lessonId: ID!) {
     getLesson(lessonId: $lessonId) {
       title
-      time
+      date
       location
       teachers {
         id
+        first_name
       }
     }
   }
@@ -68,7 +72,7 @@ const timeStyle = () => {
     fontWeight: 'bold',
     fontSize: '20px',
     textAlign: 'center',
-    padding: '15px 15px',
+    padding: '10px 10px',
     borderRadius: '0px',
   };
 };
@@ -76,6 +80,8 @@ const timeStyle = () => {
 const titleStyle = () => {
   return {
     fontSize: '20px',
+    fontFamily: 'Ubuntu',
+    fontWeight: 'bold',
     textAlign: 'center',
     borderRadius: '0px',
     width: '100%',
@@ -86,8 +92,6 @@ const buttonStyle = () => {
   return {
     float: 'right',
     ml: 2,
-    mt: 1,
-    mb: 1,
     borderRadius: '0px',
     backgroundColor: '#6D8A96',
   };

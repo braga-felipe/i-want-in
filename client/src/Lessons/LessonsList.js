@@ -6,15 +6,29 @@ import LessonItem from './LessonItem';
 export default function LessonsList() {
   const { loading, data } = useQuery(FETCH_LESSONS_QUERY);
 
+  console.log({ data });
+  const sortedLessons = data && [...data.getLessons];
+
   return (
-    <div>
-      <h1>Lessons List</h1>
+    <div
+      style={{
+        marginTop: '1em',
+        boxShadow: '0 0 4px 1px rgb(199, 199, 199)',
+        backgroundColor: '#F2EDEB',
+        padding: '7px',
+      }}>
+      <h2 style={{ textAlign: 'center' }}>Lessons List</h2>
       <Container component='main' maxWidth='xs'>
         {loading
           ? 'Loading lessons...'
-          : data.getLessons.map((lesson, idx) => (
-              <LessonItem lesson={lesson} idx={idx} key={`lesson${idx}`} />
-            ))}
+          : sortedLessons
+              .sort(
+                (a, b) =>
+                  new Date(a.date).getTime() - new Date(b.date).getTime()
+              )
+              .map((lesson, idx) => (
+                <LessonItem lesson={lesson} idx={idx} key={`lesson${idx}`} />
+              ))}
       </Container>
     </div>
   );
@@ -27,7 +41,7 @@ export const FETCH_LESSONS_QUERY = gql`
       title
       description
       location
-      time
+      date
       teachers {
         username
       }

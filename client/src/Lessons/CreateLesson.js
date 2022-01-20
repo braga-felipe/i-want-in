@@ -41,7 +41,6 @@ export default function CreateLesson() {
     title: '',
     description: '',
     location: '',
-    time: '',
     date: '',
     partner: '',
   });
@@ -50,14 +49,18 @@ export default function CreateLesson() {
     { label: 'Title', name: 'title' },
     { label: 'Description', name: 'description' },
     { label: 'Location', name: 'location' },
-    { label: 'Time', name: 'time' },
     { label: 'Date', name: 'date' },
     { label: 'Partner', name: 'partner' },
   ];
 
   return (
-    <div>
-      <h1 style={{ textAlign: 'center' }}>Create an Event</h1>
+    <div
+      style={{
+        marginTop: '1em',
+        backgroundColor: '#F2EDEB',
+        boxShadow: '0 0 4px 1px rgb(199, 199, 199)',
+      }}>
+      <h2 style={{ textAlign: 'center' }}>Create an Event</h2>
       <Container maxWidth='xs'>
         <form
           onSubmit={handleSubmit}
@@ -75,15 +78,9 @@ export default function CreateLesson() {
                 variant='filled'
                 name={field.name}
                 value={formState[field.name]}
-                // error={errors && errors[field.name] ? true : false}
-                type={
-                  field.name === 'time'
-                    ? 'time'
-                    : field.name === 'date'
-                    ? 'date'
-                    : ''
-                }
-                // helperText={errors[field.name] ? errors[field.name] : ''}
+                error={errors && errors[field.name] ? true : false}
+                type={field.name === 'date' ? 'datetime-local' : ''}
+                helperText={errors[field.name] ? errors[field.name] : ''}
               />
             ))}
             <Button
@@ -110,7 +107,6 @@ const CREATE_LESSON = gql`
     $title: String!
     $description: String!
     $location: String!
-    $time: String!
     $date: String!
     $partner: String
   ) {
@@ -118,7 +114,6 @@ const CREATE_LESSON = gql`
       title: $title
       description: $description
       location: $location
-      time: $time
       date: $date
       partner: $partner
     ) {
@@ -126,7 +121,6 @@ const CREATE_LESSON = gql`
       title
       description
       location
-      time
       date
       teachers {
         username

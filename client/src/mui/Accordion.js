@@ -1,7 +1,7 @@
 // --- GO TO LINE 53 FOR THE COMPONENET ---
 import React from 'react';
 import { useNavigate } from 'react-router';
-
+import moment from 'moment';
 import {
   styled,
   Accordion as MuiAccordion,
@@ -10,6 +10,8 @@ import {
   Typography,
   Button,
 } from '@mui/material';
+import ButtonAuth from '../buttons/ButtonAuth';
+
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -72,7 +74,9 @@ export default function AccordionComponent({ lesson, idx }) {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>Description: {lesson.description};</Typography>
-          <Typography>Time: {lesson.time};</Typography>
+          <Typography>
+            Date: {moment(new Date(lesson.date).getTime()).format('llll')};
+          </Typography>
           <Typography>Place: {lesson.location}</Typography>
           <Button
             onClick={navigateToCard}

@@ -18,7 +18,6 @@ module.exports = gql`
     title: String!
     description: String!
     location: String!
-    time: String!
     date: String!
     created_at: String!
     teachers: [Teacher]
@@ -30,6 +29,8 @@ module.exports = gql`
   type ClassItem {
     id: ID!
     title: String!
+    date: String!
+    location: String!
     teachers: [Teacher]
   }
 
@@ -76,7 +77,6 @@ module.exports = gql`
       title: String!
       description: String!
       location: String!
-      time: String!
       date: String!
       partner: String
     ): Lesson!

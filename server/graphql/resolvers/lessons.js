@@ -18,10 +18,9 @@ module.exports = {
     },
 
     async getLesson(_, { lessonId }) {
-      console.log('getting lessons');
       try {
         const lesson = await Lesson.findById(lessonId);
-        console.log('students: ', lesson.students);
+
         if (lesson) return lesson;
         else throw new Error('Lesson not found');
       } catch (err) {
@@ -33,21 +32,19 @@ module.exports = {
   Mutation: {
     async createLesson(
       _,
-      { title, description, location, time, date, partner },
+      { title, description, location, date, partner },
       context
     ) {
       // Validate user
       const userValid = checkAuth(context);
       const user = await User.findOne({ _id: userValid.id });
       const _partner = await User.findOne({ username: partner });
-      console.log({ _partner }); /*this is ok*/
 
       // Validate input
       const { errors, valid } = validateCreateInput(
         title,
         description,
         location,
-        time,
         date
       );
       if (!valid) {
@@ -77,7 +74,6 @@ module.exports = {
           title,
           description,
           location,
-          time,
           date,
           teachers,
           created_at: new Date().toISOString(),

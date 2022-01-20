@@ -42,7 +42,6 @@ export default function LogIn() {
     // we deconstruct the "result" object to get "login" from the "data" property, and pass an alias ("userData") to it for better readibility
     update(_, { data: { login: userData } }) {
       context.login(userData);
-      console.log(userData);
       navidateToDashboard();
     },
     onError(err) {

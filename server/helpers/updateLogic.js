@@ -58,7 +58,13 @@ const updateUser = async function (lessonId, event, userId = null) {
     if (event === 'create') {
       const updatedClasses = [
         ...user.classes,
-        { id: lesson._id, title: lesson.title, teachers: lesson.teachers },
+        {
+          id: lesson._id,
+          title: lesson.title,
+          date: lesson.date,
+          location: lesson.location,
+          teachers: lesson.teachers,
+        },
       ];
       return await User.updateOne(
         { _id: user._id },
@@ -72,12 +78,12 @@ const updateUser = async function (lessonId, event, userId = null) {
         ...lesson.students,
         {
           id: user._id,
+          username: user.username,
           first_name: user.first_name,
           last_name: user.last_name,
+          email: user.email,
         },
       ];
-
-      console.log({ updatedStudents });
 
       await Lesson.updateOne(
         { _id: lesson._id },
@@ -86,7 +92,13 @@ const updateUser = async function (lessonId, event, userId = null) {
 
       const updatedSignedup = [
         ...user.signedup_to,
-        { id: lesson._id, title: lesson.title, teachers: lesson.teachers },
+        {
+          id: lesson._id,
+          title: lesson.title,
+          date: lesson.date,
+          location: lesson.location,
+          teachers: lesson.teachers,
+        },
       ];
       return await User.updateOne(
         { _id: user._id },

@@ -4,7 +4,6 @@ const lessonSchema = new Schema({
   title: String,
   description: String,
   location: String,
-  time: String,
   date: String,
   created_at: String,
   teachers: [

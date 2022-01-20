@@ -72,7 +72,7 @@ exports.validateLoginInput = (username, password) => {
   };
 };
 
-exports.validateCreateInput = (title, description, location, time, date) => {
+exports.validateCreateInput = (title, description, location, date) => {
   // object to store the errors and to later check if the errors object is empty
   const errors = {};
 
@@ -86,11 +86,8 @@ exports.validateCreateInput = (title, description, location, time, date) => {
   // check if location input is empty
   if (location.trim() === '') errors.location = 'Please enter a location';
 
-  // check if time input is empty
-  if (time.trim() === '') errors.time = 'Please select time';
-
   // check if date input is empty
-  if (date.trim() === '') errors.time = 'Please select date';
+  if (date.trim() === '') errors.date = 'Please select date';
 
   return {
     errors,

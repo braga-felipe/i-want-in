@@ -11,6 +11,8 @@ const userSchema = new Schema({
     {
       id: String,
       title: String,
+      date: String,
+      location: String,
       teachers: [
         {
           id: String,
@@ -25,6 +27,8 @@ const userSchema = new Schema({
     {
       id: String,
       title: String,
+      date: String,
+      location: String,
       teachers: [
         {
           id: String,

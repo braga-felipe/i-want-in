@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const teachers = [];
 const check = true;
 
@@ -31,3 +33,8 @@ const signup = [{ id: '1', title: 'Non-Authentic' }];
 const classList = classes.concat(signup).flatMap((item) => item);
 
 classList;
+
+const dateTime = new Date('2022-01-19T18:15').getTime();
+const momentDate = moment(dateTime).format('hh:mm a');
+momentDate;
+dateTime;

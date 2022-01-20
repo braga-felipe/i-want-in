@@ -2,8 +2,8 @@ import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { useLocation } from 'react-router-dom';
 
+import NextLesson from './NextLesson';
 import Upcoming from './Upcoming';
-import { Container } from '@mui/material';
 
 export default function Dashboard() {
   const userId = useLocation().pathname.split('/').pop();
@@ -16,13 +16,31 @@ export default function Dashboard() {
   });
 
   const user = loading ? '' : data.getUser;
+  console.log({ user });
+  const nextLesson = loading
+    ? ''
+    : user.classes
+        .concat(user.signedup_to)
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .shift();
+  console.log({ nextLesson });
 
   return (
-    <Container>
-      <h2>{`${user.first_name}'s dashboard`}</h2>
-      <h3>Upcoming:</h3>
-      <Upcoming user={user} />
-    </Container>
+    <div
+      style={{
+        boxShadow: '0 0 4px 1px rgb(199, 199, 199)',
+        backgroundColor: '#F2EDEB',
+        padding: '7px',
+        marginTop: '1em',
+      }}>
+      <h2
+        style={{ textAlign: 'center' }}>{`${user.first_name}'s dashboard`}</h2>
+      <NextLesson user={user} />
+      <Upcoming
+        style={{ boxShadow: '0 0 4px 1px rgb(199, 199, 199)' }}
+        user={user}
+      />
+    </div>
   );
 }
 
@@ -38,10 +56,14 @@ export const FETCH_ONE_USER = gql`
       classes {
         id
         title
+        date
+        location
       }
       signedup_to {
         id
         title
+        date
+        location
       }
     }
   }

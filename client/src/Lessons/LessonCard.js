@@ -12,6 +12,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import moment from 'moment';
+
 export default function LessonCard() {
   // getting lessonID from url using "useLocation" hook
   const lessonId = useLocation().pathname.split('/')[2];
@@ -27,7 +29,6 @@ export default function LessonCard() {
   const teachers = loading
     ? ''
     : lesson.teachers.flatMap((teacher) => teacher.username);
-  console.log({ teachers });
 
   return (
     <Container>
@@ -53,6 +54,15 @@ export default function LessonCard() {
                   color='text.secondary'
                   sx={{ mb: 2 }}>
                   {lesson.description}
+                </Typography>
+                <Typography variant='body1' color='text.primary'>
+                  Date: {moment(lesson.date).format('LL')}
+                </Typography>
+                <Typography variant='body1' color='text.primary'>
+                  Time: {moment(lesson.date).format('LT')}
+                </Typography>
+                <Typography variant='body1' color='text.primary'>
+                  Location: {lesson.location}
                 </Typography>
                 <Typography variant='body1' color='text.primary'>
                   Teachers:
@@ -87,7 +97,6 @@ const FETCH_ONE_LESSON = gql`
       title
       description
       location
-      time
       teachers {
         id
         username
