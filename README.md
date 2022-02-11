@@ -52,15 +52,16 @@ nodemon
 ## Tech Stack
 
 - [GraphQl](https://graphql.org/)
-- [Apollo] (https://apollographql.com/)
-- [Express] (https://expressjs.com)
-- [Mongoose] (https://mongoosejs.com/)
-- [React] (https://reactjs.org)
-- [Material-UI] (https://mui.com/)
+- [Apollo](https://apollographql.com/)
+- [Express](https://expressjs.com)
+- [Mongoose](https://mongoosejs.com/)
+- [React](https://reactjs.org)
+- [Material-UI](https://mui.com/)
 
 ## Enjoy!
 
 I hope you enjoy this project and feel free to reach out and contribute to it.
+
 Big hugs!
 
 Felipe
