@@ -1,4 +1,3 @@
-// --- GO TO LINE 53 FOR THE COMPONENET ---
 import React from 'react';
 import { useNavigate } from 'react-router';
 import moment from 'moment';
@@ -10,7 +9,6 @@ import {
   Typography,
   Button,
 } from '@mui/material';
-import ButtonAuth from '../buttons/ButtonAuth';
 
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 const Accordion = styled((props) => (

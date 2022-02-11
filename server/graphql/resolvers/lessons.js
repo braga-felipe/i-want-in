@@ -67,7 +67,6 @@ module.exports = {
           first_name: _partner.first_name,
           last_name: _partner.last_name,
         });
-      console.log({ teachers });
       try {
         // create new instance of Lesson with params
         const lesson = new Lesson({
@@ -101,7 +100,6 @@ module.exports = {
     async deleteLesson(_, { lessonId }) {
       try {
         const lesson = await Lesson.findById(lessonId);
-        console.log({ lesson });
         if (lesson) {
           await updateUser(lessonId, 'delete');
           const lessonTitle = lesson.title;

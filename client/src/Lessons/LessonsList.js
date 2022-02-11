@@ -6,7 +6,6 @@ import LessonItem from './LessonItem';
 export default function LessonsList() {
   const { loading, data } = useQuery(FETCH_LESSONS_QUERY);
 
-  console.log({ data });
   const sortedLessons = data && [...data.getLessons];
 
   return (
@@ -23,9 +22,9 @@ export default function LessonsList() {
           border: '1px solid',
           backgroundColor: 'white',
           overflowY: 'scroll',
-          height: '370px',
+          height: '570px',
         }}>
-        <Container component='main' maxWidth='xs'>
+        <Container component='main' maxWidth='xl' padding='0'>
           {loading
             ? 'Loading lessons...'
             : sortedLessons

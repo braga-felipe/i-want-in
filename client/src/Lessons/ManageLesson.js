@@ -18,7 +18,6 @@ export default function ManageLesson() {
     : data && data.getLesson.students.flatMap((student) => student.id);
 
   const lesson = loading ? '' : data && data.getLesson;
-  //TODO:CHANGE THE DATE FORMAT
   return (
     <div
       style={{
@@ -50,7 +49,6 @@ export default function ManageLesson() {
     </div>
   );
 }
-// TODO: PASS THE WHOLE STUDENT TO THE NEXT COMPONENT
 
 const FETCH_STUDENTS_QUERY = gql`
   query getStudents($lessonId: ID!) {
