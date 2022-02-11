@@ -53,7 +53,6 @@ const updateUser = async function (lessonId, event, userId = null) {
 
     // fetch user
     const user = await User.findById(userId);
-    console.log('user in UPDATE', user);
     // if we're creating a class we need to update the user's "classes" property
     if (event === 'create') {
       const updatedClasses = [

@@ -6,7 +6,6 @@ import LessonItem from './LessonItem';
 export default function LessonsList() {
   const { loading, data } = useQuery(FETCH_LESSONS_QUERY);
 
-  console.log({ data });
   const sortedLessons = data && [...data.getLessons];
 
   return (

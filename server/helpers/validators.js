@@ -94,14 +94,3 @@ exports.validateCreateInput = (title, description, location, date) => {
     valid: !Object.keys(errors).length,
   };
 };
-
-// old phone number validation
-// // check if phone input is empty
-// if (phone.trim() === '') errors.phone = 'Please enter a phone number';
-// else {
-// 	// regEx to validate phone number
-// 	const regEx = /^(\+|00)[1-9][0-9 \-\(\)\.]{7,32}$/;
-// 	if (!phone.match(regEx)) {
-// 		errors.phone = 'Please enter a valid phone number';
-// 	}
-// }

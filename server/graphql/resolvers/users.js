@@ -80,7 +80,6 @@ module.exports = {
         },
       }
     ) {
-      console.log('create user');
       // Validate user data
       // destructure the result of calling the helper
       const { valid, errors } = validateRegistrationInput(
@@ -123,9 +122,7 @@ module.exports = {
       const token = generateToken(res);
 
       return {
-        // _doc is where the document is stored
         ...res._doc,
-        // id is not included in the _doc
         id: res._id,
         token,
       };
@@ -175,7 +172,6 @@ module.exports = {
     },
 
     async signupToLesson(_, { lessonId, userId }, context) {
-      // const user = checkAuth(context);
       const lesson = await Lesson.findById(lessonId);
       try {
         const student = await User.findById(userId);

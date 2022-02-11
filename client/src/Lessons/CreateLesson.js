@@ -16,14 +16,12 @@ export default function CreateLesson() {
   const navigate = useNavigate();
 
   // if user not logged in or token is expired, redirect to login
-  // TODO: implement logic to check if user is a teacher
   useEffect(() => {
     !context.user && navigate('/login', { replace: true });
   });
 
   const [addLesson, { loading }] = useMutation(CREATE_LESSON, {
     update(_, result) {
-      // TODO: implement logic to navigate to Component with id
       navigate(`/card/${result.data.createLesson.id}`, { replace: true });
     },
     onError(err) {

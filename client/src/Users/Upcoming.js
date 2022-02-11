@@ -10,7 +10,6 @@ export default function Upcoming({ user }) {
           return new Date(a.date).getTime() - new Date(b.date).getTime();
         })
     : ['Loading...'];
-  console.log({ classList });
   return (
     <>
       <h3>Upcoming:</h3>

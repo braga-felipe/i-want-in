@@ -16,14 +16,12 @@ export default function Dashboard() {
   });
 
   const user = loading ? '' : data.getUser;
-  console.log({ user });
   const nextLesson = loading
     ? ''
     : user.classes
         .concat(user.signedup_to)
         .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
         .shift();
-  console.log({ nextLesson });
 
   return (
     <div

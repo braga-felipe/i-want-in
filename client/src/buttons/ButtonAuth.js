@@ -56,7 +56,6 @@ export default function ButtonAuth({ lesson, idx }) {
   const [deleteLesson] = useMutation(DELETE_LESSON, {
     variables: { lessonId: lesson.id },
     update(_, result) {
-      //TODO: handle the reaload of the "events" page without using 'window.location.reaload()'
       navigate('/lessons', { replace: true });
       alert(result.data.deleteLesson);
       window.location.reload();
