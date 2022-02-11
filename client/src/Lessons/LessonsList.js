@@ -22,9 +22,9 @@ export default function LessonsList() {
           border: '1px solid',
           backgroundColor: 'white',
           overflowY: 'scroll',
-          height: '370px',
+          height: '570px',
         }}>
-        <Container component='main' maxWidth='xs'>
+        <Container component='main' maxWidth='xl' padding='0'>
           {loading
             ? 'Loading lessons...'
             : sortedLessons
