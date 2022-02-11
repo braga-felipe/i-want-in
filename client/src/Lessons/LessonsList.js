@@ -18,17 +18,25 @@ export default function LessonsList() {
         padding: '7px',
       }}>
       <h2 style={{ textAlign: 'center' }}>Lessons List</h2>
-      <Container component='main' maxWidth='xs'>
-        {loading
-          ? 'Loading lessons...'
-          : sortedLessons
-              .sort(
-                (a, b) =>
-                  new Date(a.date).getTime() - new Date(b.date).getTime()
-              )
-              .map((lesson, idx) => (
-                <LessonItem lesson={lesson} idx={idx} key={`lesson${idx}`} />
-              ))}
+      <Container
+        sx={{
+          border: '1px solid',
+          backgroundColor: 'white',
+          overflowY: 'scroll',
+          height: '370px',
+        }}>
+        <Container component='main' maxWidth='xs'>
+          {loading
+            ? 'Loading lessons...'
+            : sortedLessons
+                .sort(
+                  (a, b) =>
+                    new Date(a.date).getTime() - new Date(b.date).getTime()
+                )
+                .map((lesson, idx) => (
+                  <LessonItem lesson={lesson} idx={idx} key={`lesson${idx}`} />
+                ))}
+        </Container>
       </Container>
     </div>
   );
