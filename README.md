@@ -5,6 +5,8 @@ Being an organizer myself, I've always found it a bit frustrating to be going th
 
 There are still a lot of features to be implemented and a lot of work to do in terms of the UI, but this is a project that will be developed with time and taking any help and resources from people interested in contribute.
 
+This was a project build with a time constraint of one week, as part of a coding program I attended.
+
 ## Screenshots
 
 <p align="center">
